@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konate Labs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --deep-navy: #0d1b2a;
+            --slate: #415a77;
+            --ice-blue: #778da9;
+            --soft-white: #fafafa;
+            --pure-white: #ffffff;
+            --accent: #e0e1dd;
+            --charcoal: #1b263b;
+            --cyan-glow: #06B6D4;
+            --warm-accent: #d4a574;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            color: var(--deep-navy);
+            background: var(--soft-white);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        /* Custom cursor effect */
+        body::after {
+            content: '';
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--cyan-glow);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        /* Smooth scroll reveal animations */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .animate-in {
+            animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+
+        /* Container System */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 clamp(24px, 5vw, 80px);
+        }
+
+        .container-narrow {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 clamp(24px, 5vw, 80px);
+        }
+
+        /* Navigation with personality */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 40px clamp(24px, 5vw, 80px);
+            background: rgba(250, 250, 250, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(13, 27, 42, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            color: var(--deep-navy);
+            text-transform: uppercase;
+        }
+
+        .nav-tagline {
+            font-size: 10px;
+            color: var(--slate);
+            letter-spacing: 0.1em;
+            font-style: italic;
+        }
+
+        /* HERO SECTION with floating elements */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 120px;
+            padding-bottom: 120px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            right: 10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '{ }';
+            position: absolute;
+            bottom: 15%;
+            left: 5%;
+            font-size: 120px;
+            color: rgba(13, 27, 42, 0.02);
+            font-family: 'Courier New', monospace;
+            pointer-events: none;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .hero-content {
+            max-width: 1100px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 8vw, 112px);
+            color: var(--deep-navy);
+            margin-bottom: 40px;
+            line-height: 1.1;
+            position: relative;
+        }
+
+        .hero h1::first-letter {
+            color: var(--cyan-glow);
+        }
+
+        .hero-subheadline {
+            font-size: clamp(18px, 2.5vw, 28px);
+            font-weight: 300;
+            color: var(--slate);
+            max-width: 700px;
+            margin-bottom: 60px;
+            line-height: 1.6;
+        }
+
+        .hero-subheadline strong {
+            color: var(--deep-navy);
+            font-weight: 500;
+            position: relative;
+        }
+
+        .hero-subheadline strong::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cyan-glow), transparent);
+            opacity: 0.3;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 20px 50px;
+            background: var(--deep-navy);
+            color: var(--pure-white);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--charcoal);
+            transition: left 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: -1;
+        }
+
+        .btn-primary:hover::before {
+            left: 0;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.2);
+        }
+
+        /* Section Spacing */
+        section {
+            padding: clamp(80px, 12vw, 180px) 0;
+            position: relative;
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ice-blue);
+            margin-bottom: 24px;
+            display: block;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .section-label::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 1px;
+            background: var(--cyan-glow);
+        }
+
+        .section-title {
+            font-size: clamp(40px, 6vw, 72px);
+            color: var(--deep-navy);
+            margin-bottom: 80px;
+            max-width: 900px;
+        }
+
+        /* WHAT WE BUILD with personality */
+        .what-we-build {
+            background: var(--pure-white);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 0;
+        }
+
+        .project-card {
+            padding: clamp(40px, 6vw, 80px);
+            border: 1px solid rgba(13, 27, 42, 0.08);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            background: var(--soft-white);
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--cyan-glow), var(--warm-accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .project-card:hover {
+            background: var(--pure-white);
+            transform: translateY(-8px);
+            box-shadow: 0 40px 80px rgba(13, 27, 42, 0.12);
+            z-index: 10;
+        }
+
+        .project-number {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            color: var(--cyan-glow);
+            margin-bottom: 32px;
+            display: block;
+            position: relative;
+        }
+
+        .project-title {
+            font-size: clamp(28px, 3vw, 42px);
+            color: var(--deep-navy);
+            margin-bottom: 24px;
+        }
+
+        .project-description {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--slate);
+            margin-bottom: 32px;
+        }
+
+        .project-features {
+            list-style: none;
+            margin-bottom: 40px;
+        }
+
+        .project-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(13, 27, 42, 0.06);
+            font-size: 15px;
+            color: var(--deep-navy);
+            font-weight: 400;
+            position: relative;
+            padding-left: 24px;
+            transition: padding-left 0.3s ease;
+        }
+
+        .project-features li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--cyan-glow);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover .project-features li::before {
+            opacity: 1;
+        }
+
+        .project-meta {
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(13, 27, 42, 0.08);
+        }
+
+        .project-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--ice-blue);
+            margin-bottom: 12px;
+        }
+
+        .project-name {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--deep-navy);
+            margin-bottom: 8px;
+        }
+
+        .project-detail {
+            font-size: 14px;
+            color: var(--slate);
+            line-height: 1.7;
+        }
+
+        .project-image {
+            width: 100%;
+            aspect-ratio: 16/10;
+            background: linear-gradient(135deg, #e8e8e8 0%, #d4d4d4 100%);
+            margin-top: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ice-blue);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.6s ease;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(0.98);
+        }
+
+        .project-image::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Special styling for RESONA */
+        .resona-card {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.03) 0%, var(--soft-white) 100%);
+        }
+
+        .resona-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: var(--cyan-glow);
+            color: var(--pure-white);
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            border-radius: 2px;
+        }
+
+        /* HOW IT WORKS with personality */
+        .how-it-works {
+            background: var(--deep-navy);
+            color: var(--pure-white);
+            overflow: hidden;
+        }
+
+        .how-it-works::before {
+            content: 'PROCESS';
+            position: absolute;
+            top: 10%;
+            right: -5%;
+            font-size: 200px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.02);
+            font-family: 'Cormorant Garamond', serif;
+            transform: rotate(-10deg);
+            pointer-events: none;
+        }
+
+        .how-it-works .section-label {
+            color: var(--cyan-glow);
+        }
+
+        .how-it-works .section-title {
+            color: var(--pure-white);
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: clamp(40px, 6vw, 80px);
+            margin-top: 80px;
+        }
+
+        .step {
+            position: relative;
+        }
+
+        .step-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(80px, 10vw, 140px);
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.08);
+            line-height: 1;
+            margin-bottom: 24px;
+            transition: color 0.6s ease;
+        }
+
+        .step:hover .step-number {
+            color: rgba(6, 182, 212, 0.15);
+        }
+
+        .step-title {
+            font-size: clamp(24px, 3vw, 36px);
+            color: var(--pure-white);
+            margin-bottom: 16px;
+        }
+
+        .step-duration {
+            font-size: 13px;
+            color: var(--cyan-glow);
+            margin-bottom: 24px;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+
+        .step-description {
+            font-size: 16px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* WHO IT'S FOR with character */
+        .who-its-for {
+            background: var(--pure-white);
+        }
+
+        .who-its-for::before {
+            content: '?';
+            position: absolute;
+            top: 15%;
+            right: 8%;
+            font-size: 300px;
+            color: rgba(13, 27, 42, 0.02);
+            font-family: 'Cormorant Garamond', serif;
+            pointer-events: none;
+        }
+
+        .who-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .who-intro {
+            font-size: clamp(20px, 2.5vw, 28px);
+            line-height: 1.6;
+            color: var(--deep-navy);
+            margin-bottom: 60px;
+            font-weight: 300;
+        }
+
+        .who-list-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--deep-navy);
+            margin-bottom: 32px;
+        }
+
+        .who-list {
+            list-style: none;
+        }
+
+        .who-list li {
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(13, 27, 42, 0.08);
+            font-size: 17px;
+            color: var(--slate);
+            position: relative;
+            padding-left: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .who-list li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: var(--cyan-glow);
+            font-size: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .who-list li:hover {
+            color: var(--deep-navy);
+            padding-left: 50px;
+        }
+
+        .who-list li:hover::before {
+            transform: rotate(90deg);
+        }
+
+        /* FINAL CTA */
+        .final-cta {
+            background: var(--soft-white);
+            text-align: center;
+            position: relative;
+        }
+
+        .final-cta::before {
+            content: '{ LETS BUILD }';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(60px, 15vw, 180px);
+            color: rgba(13, 27, 42, 0.02);
+            font-family: 'Courier New', monospace;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: clamp(40px, 6vw, 72px);
+            color: var(--deep-navy);
+            margin-bottom: 32px;
+        }
+
+        .cta-subtitle {
+            font-size: 18px;
+            color: var(--slate);
+            margin-bottom: 48px;
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            padding: 20px 50px;
+            background: transparent;
+            color: var(--deep-navy);
+            border: 1px solid var(--deep-navy);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--deep-navy);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+            z-index: -1;
+        }
+
+        .btn-secondary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-secondary:hover {
+            color: var(--pure-white);
+            transform: translateY(-3px);
+            border-color: var(--deep-navy);
+        }
+
+        .alternative-contact {
+            font-size: 15px;
+            color: var(--slate);
+        }
+
+        .alternative-contact a {
+            color: var(--deep-navy);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .alternative-contact a:hover {
+            border-bottom-color: var(--cyan-glow);
+            color: var(--cyan-glow);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--deep-navy);
+            color: var(--pure-white);
+            padding: 80px clamp(24px, 5vw, 80px);
+            text-align: center;
+            position: relative;
+        }
+
+        footer::before {
+            content: '◆';
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--cyan-glow);
+            font-size: 12px;
+            opacity: 0.6;
+        }
+
+        .footer-logo {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            margin-top: 20px;
+            opacity: 0.9;
+        }
+
+        .footer-links {
+            margin-bottom: 32px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            margin: 0 24px;
+            font-size: 14px;
+            letter-spacing: 0.05em;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--cyan-glow);
+            transition: width 0.3s ease;
+        }
+
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+
+        .footer-links a:hover {
+            color: var(--pure-white);
+        }
+
+        .copyright {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.05em;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav {
+                padding: 24px;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .nav-tagline {
+                display: none;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            .hero {
+                padding-top: 120px;
+            }
+
+            .hero::after {
+                font-size: 60px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps-container {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                padding: 16px 36px;
+                font-size: 13px;
+            }
+
+            .footer-links a {
+                display: block;
+                margin: 16px 0;
+            }
+
+            .who-its-for::before,
+            .how-it-works::before,
+            .final-cta::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <!-- LOGO OPTION 1: K as structural element in cube -->
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                <path d="M18 3L30 9.5V26.5L18 33L6 26.5V9.5L18 3Z" stroke="#06B6D4" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M12 12V24M12 18L24 12M12 18L24 24" stroke="#0d1b2a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            
+            <!-- LOGO OPTION 2: K formed by cube edges (commented out)
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                <path d="M18 3L30 9.5V26.5L18 33L6 26.5V9.5L18 3Z" stroke="#06B6D4" stroke-width="1.5" stroke-linejoin="round" fill="rgba(6, 182, 212, 0.03)"/>
+                <path d="M14 11V25M14 18L22 11M14 18L22 25" stroke="#0d1b2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="14" cy="11" r="1.5" fill="#06B6D4"/>
+                <circle cx="14" cy="25" r="1.5" fill="#06B6D4"/>
+                <circle cx="22" cy="11" r="1.5" fill="#06B6D4"/>
+                <circle cx="22" cy="25" r="1.5" fill="#06B6D4"/>
+            </svg>
+            -->
+            
+            <!-- LOGO OPTION 3: Minimalist K in isometric cube (commented out)
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                <path d="M18 6L28 11.5V24.5L18 30L8 24.5V11.5L18 6Z" stroke="#06B6D4" stroke-width="1.5"/>
+                <path d="M18 6V30" stroke="#06B6D4" stroke-width="1" opacity="0.3"/>
+                <path d="M8 11.5L28 24.5M28 11.5L8 24.5" stroke="#0d1b2a" stroke-width="0.8" opacity="0.15"/>
+                <path d="M14 14V22M14 18L21 14M14 18L21 22" stroke="#0d1b2a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            -->
+            
+            <div class="nav-logo">Konate Labs</div>
+        </div>
+        <div class="nav-tagline">Technology with empathy</div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="animate-in delay-1">We build intelligent systems that bring clarity to chaos</h1>
+                <p class="hero-subheadline animate-in delay-2">AI-powered operations for entrepreneurs + hardware innovations like the <strong>Focus Cube</strong></p>
+                <a href="https://cal.com/soufi-01yeoz/30min" target="_blank" rel="noopener noreferrer" class="btn-primary animate-in delay-3">Book a Discovery Call</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHAT WE BUILD -->
+    <section class="what-we-build">
+        <div class="container">
+            <span class="section-label">Our Work</span>
+            <h2 class="section-title">What We Build</h2>
+            
+            <div class="projects-grid">
+                <!-- Project 1: AI Operations -->
+                <div class="project-card">
+                    <span class="project-number">01</span>
+                    <h3 class="project-title">AI Operations Systems</h3>
+                    <p class="project-description">Custom AI assistants, automated workflows, and intelligent dashboards for growing businesses.</p>
+                    
+                    <ul class="project-features">
+                        <li>Custom AI assistants (know your business, answer instantly)</li>
+                        <li>Automated workflows (intake, onboarding, status updates)</li>
+                        <li>Smart dashboards (all your data, plain English queries)</li>
+                    </ul>
+
+                    <div class="project-meta">
+                        <div class="project-label">Recent Build</div>
+                        <div class="project-name">LabTrack AI for SAFER Agrobiológicos</div>
+                        <p class="project-detail">Laboratory sample tracking with barcode automation, AI queries, and real-time status tracking.</p>
+                    </div>
+
+                    <div class="project-image">LabTrack AI Screenshot</div>
+                </div>
+
+                <!-- Project 2: Analytics & Insights -->
+                <div class="project-card">
+                    <span class="project-number">02</span>
+                    <h3 class="project-title">Analytics & Insights</h3>
+                    <p class="project-description">Transform your data into clear narratives that drive better decisions and reveal hidden opportunities.</p>
+                    
+                    <ul class="project-features">
+                        <li>Custom dashboards that tell your business story</li>
+                        <li>Automated reports with actionable insights</li>
+                        <li>Pattern detection across operations, sales, and customer behavior</li>
+                        <li>1-on-1 strategic sessions to uncover hidden potential</li>
+                    </ul>
+
+                    <div class="project-meta">
+                        <div class="project-label">Approach</div>
+                        <p class="project-detail">Numbers are powerful, but stories are memorable. Through direct collaboration, we help you understand what your data is actually telling you—transforming spreadsheet overwhelm into strategic clarity and confident decision-making.</p>
+                    </div>
+
+                    <div class="project-image">Analytics Dashboard</div>
+                </div>
+
+                <!-- Project 3: Product Innovation (with RESONA) -->
+                <div class="project-card resona-card">
+                    <span class="project-number">03</span>
+                    <h3 class="project-title">Product Innovation</h3>
+                    <p class="project-description">Hardware and software designed to enhance productivity and human potential.</p>
+                    
+                    <div class="project-meta" style="margin-top: 0; padding-top: 0; border-top: none;">
+                        <div class="project-label">Current Focus</div>
+                        <div class="project-name">Focus Cube</div>
+                        <p class="project-detail">Smart productivity device with environmental sensing, breathing exercises, and focus tracking.</p>
+                    </div>
+
+                    <div class="project-meta">
+                        <span class="resona-badge">Creative Technology</span>
+                        <div class="project-name">RESONA</div>
+                        <p class="project-detail">Your Spotify Wrapped data transformed into psychological insights. Multilingual platform exploring the intersection of music taste, personality, and self-discovery. "Therapy through data."</p>
+                    </div>
+
+                    <div class="project-meta">
+                        <div class="project-label">Coming Soon</div>
+                        <ul class="project-features" style="margin-bottom: 0;">
+                            <li>Vocal processing plugins</li>
+                            <li>Wearable technology</li>
+                            <li>Creative tools for makers</li>
+                        </ul>
+                    </div>
+
+                    <div class="project-image">Focus Cube & RESONA</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works">
+        <div class="container">
+            <span class="section-label">Process</span>
+            <h2 class="section-title">How It Works</h2>
+            
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Discovery Call</h3>
+                    <p class="step-duration">30 minutes</p>
+                    <p class="step-description">We map your operations and identify the biggest opportunities for AI + automation.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">We Build Your System</h3>
+                    <p class="step-duration">2-3 weeks</p>
+                    <p class="step-description">Custom AI assistant, automated workflows, and dashboard—tailored to your business.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">You Focus on Growth</h3>
+                    <p class="step-description">Clarity without chaos. Scale without overwhelm. The system runs while you build.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHO IT'S FOR -->
+    <section class="who-its-for">
+        <div class="container">
+            <div class="who-content">
+                <span class="section-label">Ideal Client</span>
+                <h2 class="section-title">Who It's For</h2>
+                
+                <p class="who-intro">Built for entrepreneurs doing $100k-$500k/year who are drowning in manual work and ready to scale with intelligent systems.</p>
+                
+                <p class="who-list-title">Perfect fit if you're:</p>
+                <ul class="who-list">
+                    <li>Juggling 3+ disconnected tools</li>
+                    <li>Spending 10+ hours/week on admin work</li>
+                    <li>Asking "Can AI help with this?"</li>
+                    <li>Ready to invest in operations (not looking for quick fixes)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- INSIGHTS -->
+    <section class="insights-section" style="background: var(--pure-white); padding: clamp(60px, 10vw, 120px) 0;">
+        <div class="container">
+            <div class="who-content">
+                <span class="section-label">Insights</span>
+                <h2 class="section-title" style="margin-bottom: 40px;">Passport to Process</h2>
+                
+                <p style="font-size: clamp(18px, 2vw, 22px); line-height: 1.7; color: var(--slate); margin-bottom: 40px; font-weight: 300;">
+                    Stories from 65+ countries about building systems, creative technology, and the intersection of AI and human potential.
+                </p>
+                
+                <a href="#" style="display: inline-block; padding: 16px 40px; background: transparent; color: var(--deep-navy); border: 1px solid rgba(13, 27, 42, 0.2); text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.4s ease;">
+                    Read The Blog →
+                </a>
+                <!-- Replace # above with your blog URL when ready (Medium/Substack/etc) -->
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="final-cta">
+        <div class="container">
+            <div class="cta-content">
+                <span class="section-label">Get Started</span>
+                <h2 class="cta-title">Taking on 2-3 projects this quarter</h2>
+                <p class="cta-subtitle">Ready to bring clarity to your operations?</p>
+                <a href="https://cal.com/soufi-01yeoz/30min" target="_blank" rel="noopener noreferrer" class="btn-secondary">Book a Discovery Call</a>
+                <p class="alternative-contact">or email: <a href="mailto:issouf@konate-labs.com">issouf@konate-labs.com</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">Konate Labs</div>
+        <div class="footer-links">
+            <a href="#">LinkedIn</a>
+            <a href="mailto:issouf@konate-labs.com">Email</a>
+        </div>
+        <div class="copyright">© 2025 Konate Labs</div>
+    </footer>
+</body>
+</html>
