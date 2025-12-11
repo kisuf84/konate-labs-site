@@ -139,6 +139,81 @@
             font-style: italic;
         }
 
+        /* Language Toggle */
+        .language-toggle {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px 16px;
+            border: 1px solid rgba(13, 27, 42, 0.1);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            background: var(--pure-white);
+        }
+
+        .language-toggle:hover {
+            border-color: var(--cyan-glow);
+            background: rgba(6, 182, 212, 0.02);
+        }
+
+        .language-toggle svg {
+            width: 16px;
+            height: 16px;
+            opacity: 0.6;
+        }
+
+        .language-toggle span {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--deep-navy);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: var(--pure-white);
+            border: 1px solid rgba(13, 27, 42, 0.1);
+            border-radius: 4px;
+            box-shadow: 0 10px 40px rgba(13, 27, 42, 0.1);
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            min-width: 140px;
+        }
+
+        .language-toggle.active .language-dropdown {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0);
+        }
+
+        .language-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            font-size: 13px;
+            color: var(--deep-navy);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .language-option:hover {
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        .language-option.active {
+            background: rgba(6, 182, 212, 0.1);
+            font-weight: 600;
+        }
+
         /* HERO SECTION with floating elements */
         .hero {
             min-height: 100vh;
@@ -783,11 +858,25 @@
             nav {
                 padding: 24px;
                 flex-direction: column;
-                gap: 8px;
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            nav > div:first-child {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
             }
 
             .nav-tagline {
                 display: none;
+            }
+
+            .language-toggle {
+                position: absolute;
+                top: 24px;
+                right: 24px;
             }
 
             section {
