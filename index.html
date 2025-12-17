@@ -922,35 +922,34 @@
     <!-- Navigation -->
     <nav>
         <div style="display: flex; align-items: center; gap: 16px;">
-            <!-- LOGO OPTION 1: K as structural element in cube -->
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
                 <path d="M18 3L30 9.5V26.5L18 33L6 26.5V9.5L18 3Z" stroke="#06B6D4" stroke-width="1.5" stroke-linejoin="round"/>
                 <path d="M12 12V24M12 18L24 12M12 18L24 24" stroke="#0d1b2a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            
-            <!-- LOGO OPTION 2: K formed by cube edges (commented out)
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
-                <path d="M18 3L30 9.5V26.5L18 33L6 26.5V9.5L18 3Z" stroke="#06B6D4" stroke-width="1.5" stroke-linejoin="round" fill="rgba(6, 182, 212, 0.03)"/>
-                <path d="M14 11V25M14 18L22 11M14 18L22 25" stroke="#0d1b2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="14" cy="11" r="1.5" fill="#06B6D4"/>
-                <circle cx="14" cy="25" r="1.5" fill="#06B6D4"/>
-                <circle cx="22" cy="11" r="1.5" fill="#06B6D4"/>
-                <circle cx="22" cy="25" r="1.5" fill="#06B6D4"/>
-            </svg>
-            -->
-            
-            <!-- LOGO OPTION 3: Minimalist K in isometric cube (commented out)
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
-                <path d="M18 6L28 11.5V24.5L18 30L8 24.5V11.5L18 6Z" stroke="#06B6D4" stroke-width="1.5"/>
-                <path d="M18 6V30" stroke="#06B6D4" stroke-width="1" opacity="0.3"/>
-                <path d="M8 11.5L28 24.5M28 11.5L8 24.5" stroke="#0d1b2a" stroke-width="0.8" opacity="0.15"/>
-                <path d="M14 14V22M14 18L21 14M14 18L21 22" stroke="#0d1b2a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            -->
-            
             <div class="nav-logo">Konate Labs</div>
         </div>
-        <div class="nav-tagline">Technology with empathy</div>
+        
+        <div style="display: flex; align-items: center; gap: 32px;">
+            <div class="nav-tagline" id="tagline">Technology with empathy</div>
+            
+            <!-- Language Toggle -->
+            <div class="language-toggle" id="languageToggle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke-width="2"/>
+                </svg>
+                <span id="currentLang">EN</span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                    <path d="M6 8L2 4h8L6 8z"/>
+                </svg>
+                
+                <div class="language-dropdown" id="languageDropdown">
+                    <div class="language-option active" data-lang="en">🇺🇸 English</div>
+                    <div class="language-option" data-lang="es">🇪🇸 Español</div>
+                    <div class="language-option" data-lang="fr">🇫🇷 Français</div>
+                </div>
+            </div>
+        </div>
     </nav>
 
     <!-- HERO -->
@@ -1137,5 +1136,407 @@
         </div>
         <div class="copyright">© 2025 Konate Labs</div>
     </footer>
+
+    <script>
+        // Trilingual Language Toggle (EN/ES/FR)
+        const toggle = document.getElementById('languageToggle');
+        const currentLangSpan = document.getElementById('currentLang');
+        const options = document.querySelectorAll('.language-option');
+        
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggle.classList.toggle('active');
+        });
+        
+        document.addEventListener('click', () => {
+            toggle.classList.remove('active');
+        });
+        
+        let currentLanguage = 'en';
+        
+        const translations = {
+            en: {
+                tagline: "Technology with empathy",
+                heroTitle: "We build intelligent systems that bring clarity to chaos",
+                heroSubtitle: "AI-powered operations for entrepreneurs + hardware innovations like the <strong>Focus Cube</strong>",
+                ctaButton: "Book a Discovery Call",
+                ourWorkLabel: "Our Work",
+                whatWeBuildTitle: "What We Build",
+                project1Number: "01",
+                project1Title: "AI Operations Systems",
+                project1Desc: "Custom AI assistants, automated workflows, and intelligent dashboards for growing businesses.",
+                project1Feature1: "Custom AI assistants (know your business, answer instantly)",
+                project1Feature2: "Automated workflows (intake, onboarding, status updates)",
+                project1Feature3: "Smart dashboards (all your data, plain English queries)",
+                project1Feature4: "1-on-1 strategic sessions to uncover hidden potential",
+                project1MetaLabel: "Approach",
+                project1MetaDetail: "Numbers are powerful, but stories are memorable. Through direct collaboration, we help you understand what your data is actually telling you—transforming spreadsheet overwhelm into strategic clarity and confident decision-making.",
+                project1BuildLabel: "Recent Build",
+                project1BuildName: "LabTrack AI for SAFER Agrobiológicos",
+                project1BuildDetail: "Laboratory sample tracking with barcode automation, AI queries, and real-time status tracking.",
+                project2Number: "02",
+                project2Title: "Analytics & Insights",
+                project2Desc: "Transform your data into clear narratives that drive better decisions and reveal hidden opportunities.",
+                project2Feature1: "Custom dashboards that tell your business story",
+                project2Feature2: "Automated reports with actionable insights",
+                project2Feature3: "Pattern detection across operations, sales, and customer behavior",
+                project2Feature4: "1-on-1 strategic sessions to uncover hidden potential",
+                project3Number: "03",
+                project3Title: "Product Innovation",
+                project3Desc: "Hardware and software designed to enhance productivity and human potential.",
+                project3FocusLabel: "Current Focus",
+                project3FocusName: "Focus Cube",
+                project3FocusDetail: "Smart productivity device with environmental sensing, breathing exercises, and focus tracking.",
+                project3ResonaBadge: "Creative Technology",
+                project3ResonaName: "RESONA",
+                project3ResonaDetail: 'Your Spotify Wrapped data transformed into psychological insights. Multilingual platform exploring the intersection of music taste, personality, and self-discovery. "Therapy through data."',
+                project3ComingSoonLabel: "Coming Soon",
+                project3ComingSoon1: "Vocal processing plugins",
+                project3ComingSoon2: "Wearable technology",
+                project3ComingSoon3: "Creative tools for makers",
+                processLabel: "Process",
+                howItWorksTitle: "How It Works",
+                step1Title: "Discovery Call",
+                step1Duration: "30 minutes",
+                step1Desc: "We map your operations and identify the biggest opportunities for AI + automation.",
+                step2Title: "We Build Your System",
+                step2Duration: "2-3 weeks",
+                step2Desc: "Custom AI assistant, automated workflows, and dashboard—tailored to your business.",
+                step3Title: "You Focus on Growth",
+                step3Desc: "Clarity without chaos. Scale without overwhelm. The system runs while you build.",
+                idealClientLabel: "Ideal Client",
+                whoItsForTitle: "Who It's For",
+                whoIntro: "Built for entrepreneurs doing $100k-$500k/year who are drowning in manual work and ready to scale with intelligent systems.",
+                whoListTitle: "Perfect fit if you're:",
+                whoItem1: "Juggling 3+ disconnected tools",
+                whoItem2: "Spending 10+ hours/week on admin work",
+                whoItem3: 'Asking "Can AI help with this?"',
+                whoItem4: "Ready to invest in operations (not looking for quick fixes)",
+                insightsLabel: "Insights",
+                insightsTitle: "Passport to Process",
+                insightsDesc: "Stories from 65+ countries about building systems, creative technology, and the intersection of AI and human potential.",
+                insightsButton: "Read The Blog →",
+                getStartedLabel: "Get Started",
+                ctaTitle: "Taking on 2-3 projects this quarter",
+                ctaSubtitle: "Ready to bring clarity to your operations?",
+                altContact: "or email:"
+            },
+            es: {
+                tagline: "Tecnología con empatía",
+                heroTitle: "Construimos sistemas inteligentes que traen claridad al caos",
+                heroSubtitle: "Operaciones impulsadas por IA para emprendedores + innovaciones de hardware como el <strong>Focus Cube</strong>",
+                ctaButton: "Reservar una Llamada",
+                ourWorkLabel: "Nuestro Trabajo",
+                whatWeBuildTitle: "Qué Construimos",
+                project1Number: "01",
+                project1Title: "Sistemas de Operaciones con IA",
+                project1Desc: "Asistentes de IA personalizados, flujos de trabajo automatizados y paneles inteligentes para negocios en crecimiento.",
+                project1Feature1: "Asistentes de IA personalizados (conocen tu negocio, responden al instante)",
+                project1Feature2: "Flujos de trabajo automatizados (ingreso, incorporación, actualizaciones)",
+                project1Feature3: "Paneles inteligentes (todos tus datos, consultas en lenguaje natural)",
+                project1Feature4: "Sesiones estratégicas 1-a-1 para descubrir potencial oculto",
+                project1MetaLabel: "Enfoque",
+                project1MetaDetail: "Los números son poderosos, pero las historias son memorables. A través de colaboración directa, te ayudamos a entender lo que tus datos realmente te están diciendo—transformando el agobio de las hojas de cálculo en claridad estratégica y toma de decisiones segura.",
+                project1BuildLabel: "Construcción Reciente",
+                project1BuildName: "LabTrack AI para SAFER Agrobiológicos",
+                project1BuildDetail: "Seguimiento de muestras de laboratorio con automatización de códigos de barras, consultas de IA y rastreo en tiempo real.",
+                project2Number: "02",
+                project2Title: "Análisis e Insights",
+                project2Desc: "Transforma tus datos en narrativas claras que impulsan mejores decisiones y revelan oportunidades ocultas.",
+                project2Feature1: "Paneles personalizados que cuentan la historia de tu negocio",
+                project2Feature2: "Informes automatizados con insights accionables",
+                project2Feature3: "Detección de patrones en operaciones, ventas y comportamiento del cliente",
+                project2Feature4: "Sesiones estratégicas 1-a-1 para descubrir potencial oculto",
+                project3Number: "03",
+                project3Title: "Innovación de Productos",
+                project3Desc: "Hardware y software diseñados para mejorar la productividad y el potencial humano.",
+                project3FocusLabel: "Enfoque Actual",
+                project3FocusName: "Focus Cube",
+                project3FocusDetail: "Dispositivo de productividad inteligente con sensores ambientales, ejercicios de respiración y seguimiento de enfoque.",
+                project3ResonaBadge: "Tecnología Creativa",
+                project3ResonaName: "RESONA",
+                project3ResonaDetail: 'Tus datos de Spotify Wrapped transformados en insights psicológicos. Plataforma multilingüe que explora la intersección del gusto musical, personalidad y autodescubrimiento. "Terapia a través de datos."',
+                project3ComingSoonLabel: "Próximamente",
+                project3ComingSoon1: "Plugins de procesamiento vocal",
+                project3ComingSoon2: "Tecnología ponible",
+                project3ComingSoon3: "Herramientas creativas para makers",
+                processLabel: "Proceso",
+                howItWorksTitle: "Cómo Funciona",
+                step1Title: "Llamada de Descubrimiento",
+                step1Duration: "30 minutos",
+                step1Desc: "Mapeamos tus operaciones e identificamos las mayores oportunidades para IA + automatización.",
+                step2Title: "Construimos Tu Sistema",
+                step2Duration: "2-3 semanas",
+                step2Desc: "Asistente de IA personalizado, flujos de trabajo automatizados y panel—adaptado a tu negocio.",
+                step3Title: "Te Enfocas en Crecer",
+                step3Desc: "Claridad sin caos. Escala sin agobio. El sistema funciona mientras tú construyes.",
+                idealClientLabel: "Cliente Ideal",
+                whoItsForTitle: "Para Quién Es",
+                whoIntro: "Construido para emprendedores facturando $100k-$500k/año que se ahogan en trabajo manual y están listos para escalar con sistemas inteligentes.",
+                whoListTitle: "Perfecto si estás:",
+                whoItem1: "Haciendo malabarismos con 3+ herramientas desconectadas",
+                whoItem2: "Gastando 10+ horas/semana en trabajo administrativo",
+                whoItem3: '¿Preguntando "Puede la IA ayudar con esto?"',
+                whoItem4: "Listo para invertir en operaciones (no buscas soluciones rápidas)",
+                insightsLabel: "Perspectivas",
+                insightsTitle: "Pasaporte al Proceso",
+                insightsDesc: "Historias de 65+ países sobre construcción de sistemas, tecnología creativa y la intersección de IA y potencial humano.",
+                insightsButton: "Leer el Blog →",
+                getStartedLabel: "Comenzar",
+                ctaTitle: "Aceptando 2-3 proyectos este trimestre",
+                ctaSubtitle: "¿Listo para traer claridad a tus operaciones?",
+                altContact: "o email:"
+            },
+            fr: {
+                tagline: "Technologie avec empathie",
+                heroTitle: "Nous construisons des systèmes intelligents qui apportent de la clarté au chaos",
+                heroSubtitle: "Opérations alimentées par l'IA pour entrepreneurs + innovations matérielles comme le <strong>Focus Cube</strong>",
+                ctaButton: "Réserver un Appel",
+                ourWorkLabel: "Notre Travail",
+                whatWeBuildTitle: "Ce Que Nous Construisons",
+                project1Number: "01",
+                project1Title: "Systèmes d'Opérations IA",
+                project1Desc: "Assistants IA personnalisés, flux de travail automatisés et tableaux de bord intelligents pour entreprises en croissance.",
+                project1Feature1: "Assistants IA personnalisés (connaissent votre entreprise, répondent instantanément)",
+                project1Feature2: "Flux de travail automatisés (admission, intégration, mises à jour)",
+                project1Feature3: "Tableaux de bord intelligents (toutes vos données, requêtes en langage naturel)",
+                project1Feature4: "Sessions stratégiques 1-à-1 pour découvrir le potentiel caché",
+                project1MetaLabel: "Approche",
+                project1MetaDetail: "Les chiffres sont puissants, mais les histoires sont mémorables. Grâce à une collaboration directe, nous vous aidons à comprendre ce que vos données vous disent réellement—transformant la surcharge des feuilles de calcul en clarté stratégique et prise de décision confiante.",
+                project1BuildLabel: "Construction Récente",
+                project1BuildName: "LabTrack AI pour SAFER Agrobiológicos",
+                project1BuildDetail: "Suivi d'échantillons de laboratoire avec automatisation de codes-barres, requêtes IA et suivi en temps réel.",
+                project2Number: "02",
+                project2Title: "Analyses & Insights",
+                project2Desc: "Transformez vos données en récits clairs qui stimulent de meilleures décisions et révèlent des opportunités cachées.",
+                project2Feature1: "Tableaux de bord personnalisés qui racontent l'histoire de votre entreprise",
+                project2Feature2: "Rapports automatisés avec insights actionnables",
+                project2Feature3: "Détection de modèles dans les opérations, les ventes et le comportement client",
+                project2Feature4: "Sessions stratégiques 1-à-1 pour découvrir le potentiel caché",
+                project3Number: "03",
+                project3Title: "Innovation Produit",
+                project3Desc: "Matériel et logiciels conçus pour améliorer la productivité et le potentiel humain.",
+                project3FocusLabel: "Focus Actuel",
+                project3FocusName: "Focus Cube",
+                project3FocusDetail: "Appareil de productivité intelligent avec détection environnementale, exercices de respiration et suivi de concentration.",
+                project3ResonaBadge: "Technologie Créative",
+                project3ResonaName: "RESONA",
+                project3ResonaDetail: 'Vos données Spotify Wrapped transformées en insights psychologiques. Plateforme multilingue explorant l\'intersection du goût musical, de la personnalité et de la découverte de soi. "Thérapie par les données."',
+                project3ComingSoonLabel: "Bientôt Disponible",
+                project3ComingSoon1: "Plugins de traitement vocal",
+                project3ComingSoon2: "Technologie portable",
+                project3ComingSoon3: "Outils créatifs pour makers",
+                processLabel: "Processus",
+                howItWorksTitle: "Comment Ça Marche",
+                step1Title: "Appel de Découverte",
+                step1Duration: "30 minutes",
+                step1Desc: "Nous cartographions vos opérations et identifions les plus grandes opportunités pour l'IA + l'automatisation.",
+                step2Title: "Nous Construisons Votre Système",
+                step2Duration: "2-3 semaines",
+                step2Desc: "Assistant IA personnalisé, flux de travail automatisés et tableau de bord—adapté à votre entreprise.",
+                step3Title: "Vous Vous Concentrez sur la Croissance",
+                step3Desc: "Clarté sans chaos. Croissance sans surcharge. Le système fonctionne pendant que vous construisez.",
+                idealClientLabel: "Client Idéal",
+                whoItsForTitle: "Pour Qui",
+                whoIntro: "Conçu pour les entrepreneurs réalisant $100k-$500k/an qui se noient dans le travail manuel et sont prêts à évoluer avec des systèmes intelligents.",
+                whoListTitle: "Parfait si vous êtes:",
+                whoItem1: "Jonglant avec 3+ outils déconnectés",
+                whoItem2: "Dépensant 10+ heures/semaine sur le travail administratif",
+                whoItem3: 'Vous demandez "L\'IA peut-elle aider avec ça?"',
+                whoItem4: "Prêt à investir dans les opérations (pas de solutions rapides)",
+                insightsLabel: "Perspectives",
+                insightsTitle: "Passeport au Processus",
+                insightsDesc: "Histoires de 65+ pays sur la construction de systèmes, la technologie créative et l'intersection de l'IA et du potentiel humain.",
+                insightsButton: "Lire le Blog →",
+                getStartedLabel: "Commencer",
+                ctaTitle: "Acceptant 2-3 projets ce trimestre",
+                ctaSubtitle: "Prêt à apporter de la clarté à vos opérations?",
+                altContact: "ou email:"
+            }
+        };
+        
+        options.forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const lang = option.dataset.lang;
+                
+                if (lang !== currentLanguage) {
+                    currentLanguage = lang;
+                    currentLangSpan.textContent = lang.toUpperCase();
+                    
+                    options.forEach(opt => opt.classList.remove('active'));
+                    option.classList.add('active');
+                    
+                    translatePage(lang);
+                }
+                
+                toggle.classList.remove('active');
+            });
+        });
+        
+        function translatePage(lang) {
+            const t = translations[lang];
+            
+            // Helper function to safely update text
+            function safeUpdate(selector, text, isHTML = false) {
+                const el = document.querySelector(selector);
+                if (el) {
+                    if (isHTML) {
+                        el.innerHTML = text;
+                    } else {
+                        el.textContent = text;
+                    }
+                }
+            }
+            
+            function safeUpdateAll(selector, textArray, isHTML = false) {
+                const elements = document.querySelectorAll(selector);
+                textArray.forEach((text, index) => {
+                    if (elements[index]) {
+                        if (isHTML) {
+                            elements[index].innerHTML = text;
+                        } else {
+                            elements[index].textContent = text;
+                        }
+                    }
+                });
+            }
+            
+            // Nav
+            safeUpdate('#tagline', t.tagline);
+            
+            // Hero
+            safeUpdate('.hero h1', t.heroTitle);
+            safeUpdate('.hero-subheadline', t.heroSubtitle, true);
+            document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
+                btn.textContent = t.ctaButton;
+            });
+            
+            // What We Build Section
+            safeUpdateAll('.section-label', [t.ourWorkLabel, t.processLabel, t.idealClientLabel, t.insightsLabel, t.getStartedLabel]);
+            safeUpdateAll('.section-title', [t.whatWeBuildTitle, t.howItWorksTitle, t.whoItsForTitle, t.insightsTitle]);
+            
+            // PROJECT 1 - AI Operations
+            const projects = document.querySelectorAll('.project-card');
+            if (projects[0]) {
+                const p1 = projects[0];
+                const p1Num = p1.querySelector('.project-number');
+                const p1Title = p1.querySelector('.project-title');
+                const p1Desc = p1.querySelector('.project-description');
+                const p1Features = p1.querySelectorAll('.project-features li');
+                const p1Labels = p1.querySelectorAll('.project-label');
+                const p1Names = p1.querySelectorAll('.project-name');
+                const p1Details = p1.querySelectorAll('.project-detail');
+                
+                if (p1Num) p1Num.textContent = t.project1Number;
+                if (p1Title) p1Title.textContent = t.project1Title;
+                if (p1Desc) p1Desc.textContent = t.project1Desc;
+                if (p1Features[0]) p1Features[0].textContent = t.project1Feature1;
+                if (p1Features[1]) p1Features[1].textContent = t.project1Feature2;
+                if (p1Features[2]) p1Features[2].textContent = t.project1Feature3;
+                if (p1Labels[0]) p1Labels[0].textContent = t.project1BuildLabel;
+                if (p1Names[0]) p1Names[0].textContent = t.project1BuildName;
+                if (p1Details[0]) p1Details[0].textContent = t.project1BuildDetail;
+            }
+            
+            // PROJECT 2 - Analytics
+            if (projects[1]) {
+                const p2 = projects[1];
+                const p2Num = p2.querySelector('.project-number');
+                const p2Title = p2.querySelector('.project-title');
+                const p2Desc = p2.querySelector('.project-description');
+                const p2Features = p2.querySelectorAll('.project-features li');
+                const p2Labels = p2.querySelectorAll('.project-label');
+                const p2Details = p2.querySelectorAll('.project-detail');
+                
+                if (p2Num) p2Num.textContent = t.project2Number;
+                if (p2Title) p2Title.textContent = t.project2Title;
+                if (p2Desc) p2Desc.textContent = t.project2Desc;
+                if (p2Features[0]) p2Features[0].textContent = t.project2Feature1;
+                if (p2Features[1]) p2Features[1].textContent = t.project2Feature2;
+                if (p2Features[2]) p2Features[2].textContent = t.project2Feature3;
+                if (p2Features[3]) p2Features[3].textContent = t.project2Feature4;
+                if (p2Labels[0]) p2Labels[0].textContent = t.project1MetaLabel;
+                if (p2Details[0]) p2Details[0].textContent = t.project1MetaDetail;
+            }
+            
+            // PROJECT 3 - Product Innovation
+            if (projects[2]) {
+                const p3 = projects[2];
+                const p3Num = p3.querySelector('.project-number');
+                const p3Title = p3.querySelector('.project-title');
+                const p3Desc = p3.querySelector('.project-description');
+                const p3Labels = p3.querySelectorAll('.project-label');
+                const p3Names = p3.querySelectorAll('.project-name');
+                const p3Details = p3.querySelectorAll('.project-detail');
+                const p3Badge = p3.querySelector('.resona-badge');
+                const p3ComingSoon = p3.querySelectorAll('.project-meta')[2]?.querySelectorAll('li');
+                
+                if (p3Num) p3Num.textContent = t.project3Number;
+                if (p3Title) p3Title.textContent = t.project3Title;
+                if (p3Desc) p3Desc.textContent = t.project3Desc;
+                if (p3Labels[0]) p3Labels[0].textContent = t.project3FocusLabel;
+                if (p3Names[0]) p3Names[0].textContent = t.project3FocusName;
+                if (p3Details[0]) p3Details[0].textContent = t.project3FocusDetail;
+                if (p3Badge) p3Badge.textContent = t.project3ResonaBadge;
+                if (p3Names[1]) p3Names[1].textContent = t.project3ResonaName;
+                if (p3Details[1]) p3Details[1].textContent = t.project3ResonaDetail;
+                if (p3Labels[1]) p3Labels[1].textContent = t.project3ComingSoonLabel;
+                if (p3ComingSoon) {
+                    if (p3ComingSoon[0]) p3ComingSoon[0].textContent = t.project3ComingSoon1;
+                    if (p3ComingSoon[1]) p3ComingSoon[1].textContent = t.project3ComingSoon2;
+                    if (p3ComingSoon[2]) p3ComingSoon[2].textContent = t.project3ComingSoon3;
+                }
+            }
+            
+            // How It Works
+            const steps = document.querySelectorAll('.step');
+            if (steps[0]) {
+                const s1Title = steps[0].querySelector('.step-title');
+                const s1Duration = steps[0].querySelector('.step-duration');
+                const s1Desc = steps[0].querySelector('.step-description');
+                if (s1Title) s1Title.textContent = t.step1Title;
+                if (s1Duration) s1Duration.textContent = t.step1Duration;
+                if (s1Desc) s1Desc.textContent = t.step1Desc;
+            }
+            if (steps[1]) {
+                const s2Title = steps[1].querySelector('.step-title');
+                const s2Duration = steps[1].querySelector('.step-duration');
+                const s2Desc = steps[1].querySelector('.step-description');
+                if (s2Title) s2Title.textContent = t.step2Title;
+                if (s2Duration) s2Duration.textContent = t.step2Duration;
+                if (s2Desc) s2Desc.textContent = t.step2Desc;
+            }
+            if (steps[2]) {
+                const s3Title = steps[2].querySelector('.step-title');
+                const s3Desc = steps[2].querySelector('.step-description');
+                if (s3Title) s3Title.textContent = t.step3Title;
+                if (s3Desc) s3Desc.textContent = t.step3Desc;
+            }
+            
+            // Who It's For
+            safeUpdate('.who-intro', t.whoIntro);
+            safeUpdate('.who-list-title', t.whoListTitle);
+            const whoItems = document.querySelectorAll('.who-list li');
+            if (whoItems[0]) whoItems[0].textContent = t.whoItem1;
+            if (whoItems[1]) whoItems[1].textContent = t.whoItem2;
+            if (whoItems[2]) whoItems[2].textContent = t.whoItem3;
+            if (whoItems[3]) whoItems[3].textContent = t.whoItem4;
+            
+            // Insights
+            const insightsP = document.querySelector('.insights-section p');
+            const insightsA = document.querySelector('.insights-section a');
+            if (insightsP) insightsP.textContent = t.insightsDesc;
+            if (insightsA) insightsA.textContent = t.insightsButton;
+            
+            // Final CTA
+            safeUpdate('.cta-title', t.ctaTitle);
+            safeUpdate('.cta-subtitle', t.ctaSubtitle);
+            const altContact = document.querySelector('.alternative-contact');
+            if (altContact) {
+                altContact.innerHTML = t.altContact + ' <a href="mailto:issouf@konate-labs.com">issouf@konate-labs.com</a>';
+            }
+        }
+    </script>
 </body>
 </html>
