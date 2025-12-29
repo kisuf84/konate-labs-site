@@ -1,1566 +1,1565 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konate Labs</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --deep-navy: #0d1b2a;
-            --slate: #415a77;
-            --ice-blue: #778da9;
-            --soft-white: #fafafa;
-            --pure-white: #ffffff;
-            --accent: #e0e1dd;
-            --charcoal: #1b263b;
-            --cyan-glow: #06B6D4;
-            --warm-accent: #d4a574;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Work Sans', sans-serif;
-            color: var(--deep-navy);
-            background: var(--soft-white);
-            line-height: 1.8;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-            cursor: default;
-        }
-
-        /* Custom cursor effect */
-        body::after {
-            content: '';
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--cyan-glow);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        /* Typography */
-        h1, h2, h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-weight: 600;
-            line-height: 1.2;
-            letter-spacing: -0.02em;
-        }
-
-        /* Smooth scroll reveal animations */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
-        }
-
-        .animate-in {
-            animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0;
-        }
-
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.2s; }
-        .delay-3 { animation-delay: 0.3s; }
-        .delay-4 { animation-delay: 0.4s; }
-        .delay-5 { animation-delay: 0.5s; }
-        .delay-6 { animation-delay: 0.6s; }
-
-        /* Container System */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 clamp(24px, 5vw, 80px);
-        }
-
-        .container-narrow {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 clamp(24px, 5vw, 80px);
-        }
-
-        /* Navigation with personality */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 40px clamp(24px, 5vw, 80px);
-            background: rgba(250, 250, 250, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(13, 27, 42, 0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-logo {
-            font-size: 16px;
-            font-weight: 600;
-            letter-spacing: 0.2em;
-            color: var(--deep-navy);
-            text-transform: uppercase;
-        }
-
-        .nav-tagline {
-            font-size: 10px;
-            color: var(--slate);
-            letter-spacing: 0.1em;
-            font-style: italic;
-        }
-
-        /* Language Toggle */
-        .language-toggle {
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            padding: 8px 16px;
-            border: 1px solid rgba(13, 27, 42, 0.1);
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            background: var(--pure-white);
-        }
-
-        .language-toggle:hover {
-            border-color: var(--cyan-glow);
-            background: rgba(6, 182, 212, 0.02);
-        }
-
-        .language-toggle svg {
-            width: 16px;
-            height: 16px;
-            opacity: 0.6;
-        }
-
-        .language-toggle span {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--deep-navy);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .language-dropdown {
-            position: absolute;
-            top: calc(100% + 8px);
-            right: 0;
-            background: var(--pure-white);
-            border: 1px solid rgba(13, 27, 42, 0.1);
-            border-radius: 4px;
-            box-shadow: 0 10px 40px rgba(13, 27, 42, 0.1);
-            overflow: hidden;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            min-width: 140px;
-        }
-
-        .language-toggle.active .language-dropdown {
-            opacity: 1;
-            pointer-events: all;
-            transform: translateY(0);
-        }
-
-        .language-option {
-            padding: 12px 16px;
-            cursor: pointer;
-            transition: background 0.2s ease;
-            font-size: 13px;
-            color: var(--deep-navy);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .language-option:hover {
-            background: rgba(6, 182, 212, 0.05);
-        }
-
-        .language-option.active {
-            background: rgba(6, 182, 212, 0.1);
-            font-weight: 600;
-        }
-
-        /* HERO SECTION with floating elements */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding-top: 120px;
-            padding-bottom: 120px;
-            position: relative;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 20%;
-            right: 10%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        .hero::after {
-            content: '{ }';
-            position: absolute;
-            bottom: 15%;
-            left: 5%;
-            font-size: 120px;
-            color: rgba(13, 27, 42, 0.02);
-            font-family: 'Courier New', monospace;
-            pointer-events: none;
-            animation: float 8s ease-in-out infinite;
-        }
-
-        .hero-content {
-            max-width: 1100px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero h1 {
-            font-size: clamp(48px, 8vw, 112px);
-            color: var(--deep-navy);
-            margin-bottom: 40px;
-            line-height: 1.1;
-            position: relative;
-        }
-
-        .hero h1::first-letter {
-            color: var(--cyan-glow);
-        }
-
-        .hero-subheadline {
-            font-size: clamp(18px, 2.5vw, 28px);
-            font-weight: 300;
-            color: var(--slate);
-            max-width: 700px;
-            margin-bottom: 60px;
-            line-height: 1.6;
-        }
-
-        .hero-subheadline strong {
-            color: var(--deep-navy);
-            font-weight: 500;
-            position: relative;
-        }
-
-        .hero-subheadline strong::after {
-            content: '';
-            position: absolute;
-            bottom: 2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, var(--cyan-glow), transparent);
-            opacity: 0.3;
-        }
-
-        .btn-primary {
-            display: inline-block;
-            padding: 20px 50px;
-            background: var(--deep-navy);
-            color: var(--pure-white);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--charcoal);
-            transition: left 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: -1;
-        }
-
-        .btn-primary:hover::before {
-            left: 0;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.2);
-        }
-
-        /* Section Spacing */
-        section {
-            padding: clamp(80px, 12vw, 180px) 0;
-            position: relative;
-        }
-
-        .section-label {
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--ice-blue);
-            margin-bottom: 24px;
-            display: block;
-            position: relative;
-            padding-left: 30px;
-        }
-
-        .section-label::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 20px;
-            height: 1px;
-            background: var(--cyan-glow);
-        }
-
-        .section-title {
-            font-size: clamp(40px, 6vw, 72px);
-            color: var(--deep-navy);
-            margin-bottom: 80px;
-            max-width: 900px;
-        }
-
-        /* WHAT WE BUILD with personality */
-        .what-we-build {
-            background: var(--pure-white);
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 0;
-        }
-
-        .project-card {
-            padding: clamp(40px, 6vw, 80px);
-            border: 1px solid rgba(13, 27, 42, 0.08);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            background: var(--soft-white);
-            overflow: hidden;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--cyan-glow), var(--warm-accent));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .project-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .project-card:hover {
-            background: var(--pure-white);
-            transform: translateY(-8px);
-            box-shadow: 0 40px 80px rgba(13, 27, 42, 0.12);
-            z-index: 10;
-        }
-
-        .project-number {
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            color: var(--cyan-glow);
-            margin-bottom: 32px;
-            display: block;
-            position: relative;
-        }
-
-        .project-title {
-            font-size: clamp(28px, 3vw, 42px);
-            color: var(--deep-navy);
-            margin-bottom: 24px;
-        }
-
-        .project-description {
-            font-size: 16px;
-            line-height: 1.8;
-            color: var(--slate);
-            margin-bottom: 32px;
-        }
-
-        .project-features {
-            list-style: none;
-            margin-bottom: 40px;
-        }
-
-        .project-features li {
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(13, 27, 42, 0.06);
-            font-size: 15px;
-            color: var(--deep-navy);
-            font-weight: 400;
-            position: relative;
-            padding-left: 24px;
-            transition: padding-left 0.3s ease;
-        }
-
-        .project-features li::before {
-            content: '→';
-            position: absolute;
-            left: 0;
-            color: var(--cyan-glow);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .project-card:hover .project-features li::before {
-            opacity: 1;
-        }
-
-        .project-meta {
-            margin-top: 48px;
-            padding-top: 32px;
-            border-top: 1px solid rgba(13, 27, 42, 0.08);
-        }
-
-        .project-label {
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--ice-blue);
-            margin-bottom: 12px;
-        }
-
-        .project-name {
-            font-size: 18px;
-            font-weight: 500;
-            color: var(--deep-navy);
-            margin-bottom: 8px;
-        }
-
-        .project-detail {
-            font-size: 14px;
-            color: var(--slate);
-            line-height: 1.7;
-        }
-
-        .project-image {
-            width: 100%;
-            aspect-ratio: 16/10;
-            background: linear-gradient(135deg, #e8e8e8 0%, #d4d4d4 100%);
-            margin-top: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--ice-blue);
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.6s ease;
-        }
-
-        .project-card:hover .project-image {
-            transform: scale(0.98);
-        }
-
-        .project-image::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* Special styling for RESONA */
-        .resona-card {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.03) 0%, var(--soft-white) 100%);
-        }
-
-        .resona-badge {
-            display: inline-block;
-            padding: 6px 12px;
-            background: var(--cyan-glow);
-            color: var(--pure-white);
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-bottom: 24px;
-            border-radius: 2px;
-        }
-
-        /* HOW IT WORKS with personality */
-        .how-it-works {
-            background: var(--deep-navy);
-            color: var(--pure-white);
-            overflow: hidden;
-        }
-
-        .how-it-works::before {
-            content: 'PROCESS';
-            position: absolute;
-            top: 10%;
-            right: -5%;
-            font-size: 200px;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.02);
-            font-family: 'Cormorant Garamond', serif;
-            transform: rotate(-10deg);
-            pointer-events: none;
-        }
-
-        .how-it-works .section-label {
-            color: var(--cyan-glow);
-        }
-
-        .how-it-works .section-title {
-            color: var(--pure-white);
-        }
-
-        .steps-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: clamp(40px, 6vw, 80px);
-            margin-top: 80px;
-        }
-
-        .step {
-            position: relative;
-        }
-
-        .step-number {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(80px, 10vw, 140px);
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.08);
-            line-height: 1;
-            margin-bottom: 24px;
-            transition: color 0.6s ease;
-        }
-
-        .step:hover .step-number {
-            color: rgba(6, 182, 212, 0.15);
-        }
-
-        .step-title {
-            font-size: clamp(24px, 3vw, 36px);
-            color: var(--pure-white);
-            margin-bottom: 16px;
-        }
-
-        .step-duration {
-            font-size: 13px;
-            color: var(--cyan-glow);
-            margin-bottom: 24px;
-            letter-spacing: 0.05em;
-            font-weight: 500;
-        }
-
-        .step-description {
-            font-size: 16px;
-            line-height: 1.8;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* WHO IT'S FOR with character */
-        .who-its-for {
-            background: var(--pure-white);
-        }
-
-        .who-its-for::before {
-            content: '?';
-            position: absolute;
-            top: 15%;
-            right: 8%;
-            font-size: 300px;
-            color: rgba(13, 27, 42, 0.02);
-            font-family: 'Cormorant Garamond', serif;
-            pointer-events: none;
-        }
-
-        .who-content {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .who-intro {
-            font-size: clamp(20px, 2.5vw, 28px);
-            line-height: 1.6;
-            color: var(--deep-navy);
-            margin-bottom: 60px;
-            font-weight: 300;
-        }
-
-        .who-list-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--deep-navy);
-            margin-bottom: 32px;
-        }
-
-        .who-list {
-            list-style: none;
-        }
-
-        .who-list li {
-            padding: 24px 0;
-            border-bottom: 1px solid rgba(13, 27, 42, 0.08);
-            font-size: 17px;
-            color: var(--slate);
-            position: relative;
-            padding-left: 40px;
-            transition: all 0.3s ease;
-        }
-
-        .who-list li::before {
-            content: '✦';
-            position: absolute;
-            left: 0;
-            color: var(--cyan-glow);
-            font-size: 12px;
-            transition: transform 0.3s ease;
-        }
-
-        .who-list li:hover {
-            color: var(--deep-navy);
-            padding-left: 50px;
-        }
-
-        .who-list li:hover::before {
-            transform: rotate(90deg);
-        }
-
-        /* FINAL CTA */
-        .final-cta {
-            background: var(--soft-white);
-            text-align: center;
-            position: relative;
-        }
-
-        .final-cta::before {
-            content: '{ LETS BUILD }';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: clamp(60px, 15vw, 180px);
-            color: rgba(13, 27, 42, 0.02);
-            font-family: 'Courier New', monospace;
-            white-space: nowrap;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .cta-content {
-            max-width: 700px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .cta-title {
-            font-size: clamp(40px, 6vw, 72px);
-            color: var(--deep-navy);
-            margin-bottom: 32px;
-        }
-
-        .cta-subtitle {
-            font-size: 18px;
-            color: var(--slate);
-            margin-bottom: 48px;
-        }
-
-        .btn-secondary {
-            display: inline-block;
-            padding: 20px 50px;
-            background: transparent;
-            color: var(--deep-navy);
-            border: 1px solid var(--deep-navy);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            margin-bottom: 32px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-secondary::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: var(--deep-navy);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s ease, height 0.6s ease;
-            z-index: -1;
-        }
-
-        .btn-secondary:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .btn-secondary:hover {
-            color: var(--pure-white);
-            transform: translateY(-3px);
-            border-color: var(--deep-navy);
-        }
-
-        .alternative-contact {
-            font-size: 15px;
-            color: var(--slate);
-        }
-
-        .alternative-contact a {
-            color: var(--deep-navy);
-            text-decoration: none;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.3s ease;
-        }
-
-        .alternative-contact a:hover {
-            border-bottom-color: var(--cyan-glow);
-            color: var(--cyan-glow);
-        }
-
-        /* FOOTER */
-        footer {
-            background: var(--deep-navy);
-            color: var(--pure-white);
-            padding: 80px clamp(24px, 5vw, 80px);
-            text-align: center;
-            position: relative;
-        }
-
-        footer::before {
-            content: '◆';
-            position: absolute;
-            top: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: var(--cyan-glow);
-            font-size: 12px;
-            opacity: 0.6;
-        }
-
-        .footer-logo {
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            margin-bottom: 32px;
-            margin-top: 20px;
-            opacity: 0.9;
-        }
-
-        .footer-links {
-            margin-bottom: 32px;
-        }
-
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.6);
-            text-decoration: none;
-            margin: 0 24px;
-            font-size: 14px;
-            letter-spacing: 0.05em;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .footer-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--cyan-glow);
-            transition: width 0.3s ease;
-        }
-
-        .footer-links a:hover::after {
-            width: 100%;
-        }
-
-        .footer-links a:hover {
-            color: var(--pure-white);
-        }
-
-        .copyright {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.4);
-            letter-spacing: 0.05em;
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            nav {
-                padding: 20px 24px;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                gap: 16px;
-            }
-
-            nav > div:first-child {
-                flex: 1;
-                display: flex;
-                align-items: center;
-                gap: 12px;
-            }
-
-            nav > div:first-child svg {
-                width: 28px;
-                height: 28px;
-            }
-
-            .nav-logo {
-                font-size: 13px;
-                letter-spacing: 0.15em;
-            }
-
-            .nav-tagline {
-                display: none;
-            }
-
-            nav > div:last-child {
-                display: flex;
-                align-items: center;
-            }
-
-            .language-toggle {
-                position: static;
-                padding: 6px 12px;
-            }
-
-            .language-toggle svg:first-child {
-                width: 14px;
-                height: 14px;
-            }
-
-            .language-toggle span {
-                font-size: 12px;
-            }
-
-            section {
-                padding: 60px 0;
-            }
-
-            .hero {
-                padding-top: 120px;
-            }
-
-            .hero::after {
-                font-size: 60px;
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .steps-container {
-                grid-template-columns: 1fr;
-            }
-
-            .btn-primary,
-            .btn-secondary {
-                padding: 16px 36px;
-                font-size: 13px;
-            }
-
-            .footer-links a {
-                display: block;
-                margin: 16px 0;
-            }
-
-            .who-its-for::before,
-            .how-it-works::before,
-            .final-cta::before {
-                display: none;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Konate Labs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep-navy: #0d1b2a;
+      --slate: #415a77;
+      --ice-blue: #778da9;
+      --soft-white: #fafafa;
+      --pure-white: #ffffff;
+      --accent: #e0e1dd;
+      --charcoal: #1b263b;
+      --cyan-glow: #06B6D4;
+      --warm-accent: #d4a574;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Work Sans', sans-serif;
+      color: var(--deep-navy);
+      background: var(--soft-white);
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* Custom cursor effect */
+    body::after {
+      content: '';
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--cyan-glow);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Typography */
+    h1, h2, h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    /* Smooth scroll reveal animations */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    .animate-in {
+      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+    }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+    .delay-6 { animation-delay: 0.6s; }
+
+    /* Container System */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 clamp(24px, 5vw, 80px);
+    }
+
+    .container-narrow {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 clamp(24px, 5vw, 80px);
+    }
+
+    /* Navigation with personality */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 40px clamp(24px, 5vw, 80px);
+      background: rgba(250, 250, 250, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      border-bottom: 1px solid rgba(13, 27, 42, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: var(--deep-navy);
+      text-transform: uppercase;
+    }
+
+    .nav-tagline {
+      font-size: 10px;
+      color: var(--slate);
+      letter-spacing: 0.1em;
+      font-style: italic;
+    }
+
+    /* Language Toggle */
+    .language-toggle {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 8px 16px;
+      border: 1px solid rgba(13, 27, 42, 0.1);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      background: var(--pure-white);
+    }
+
+    .language-toggle:hover {
+      border-color: var(--cyan-glow);
+      background: rgba(6, 182, 212, 0.02);
+    }
+
+    .language-toggle svg {
+      width: 16px;
+      height: 16px;
+      opacity: 0.6;
+    }
+
+    .language-toggle span {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--deep-navy);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .language-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: var(--pure-white);
+      border: 1px solid rgba(13, 27, 42, 0.1);
+      border-radius: 4px;
+      box-shadow: 0 10px 40px rgba(13, 27, 42, 0.1);
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      min-width: 140px;
+    }
+
+    .language-toggle.active .language-dropdown {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+
+    .language-option {
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      font-size: 13px;
+      color: var(--deep-navy);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .language-option:hover {
+      background: rgba(6, 182, 212, 0.05);
+    }
+
+    .language-option.active {
+      background: rgba(6, 182, 212, 0.1);
+      font-weight: 600;
+    }
+
+    /* HERO SECTION with floating elements */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 120px;
+      padding-bottom: 120px;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 20%;
+      right: 10%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '{ }';
+      position: absolute;
+      bottom: 15%;
+      left: 5%;
+      font-size: 120px;
+      color: rgba(13, 27, 42, 0.02);
+      font-family: 'Courier New', monospace;
+      pointer-events: none;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .hero-content {
+      max-width: 1100px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: clamp(48px, 8vw, 112px);
+      color: var(--deep-navy);
+      margin-bottom: 40px;
+      line-height: 1.1;
+      position: relative;
+    }
+
+    .hero h1::first-letter {
+      color: var(--cyan-glow);
+    }
+
+    .hero-subheadline {
+      font-size: clamp(18px, 2.5vw, 28px);
+      font-weight: 300;
+      color: var(--slate);
+      max-width: 700px;
+      margin-bottom: 60px;
+      line-height: 1.6;
+    }
+
+    .hero-subheadline strong {
+      color: var(--deep-navy);
+      font-weight: 500;
+      position: relative;
+    }
+
+    .hero-subheadline strong::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--cyan-glow), transparent);
+      opacity: 0.3;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 20px 50px;
+      background: var(--deep-navy);
+      color: var(--pure-white);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--charcoal);
+      transition: left 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: -1;
+    }
+
+    .btn-primary:hover::before {
+      left: 0;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(6, 182, 212, 0.2);
+    }
+
+    /* Section Spacing */
+    section {
+      padding: clamp(80px, 12vw, 180px) 0;
+      position: relative;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ice-blue);
+      margin-bottom: 24px;
+      display: block;
+      position: relative;
+      padding-left: 30px;
+    }
+
+    .section-label::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 1px;
+      background: var(--cyan-glow);
+    }
+
+    .section-title {
+      font-size: clamp(40px, 6vw, 72px);
+      color: var(--deep-navy);
+      margin-bottom: 80px;
+      max-width: 900px;
+    }
+
+    /* WHAT WE BUILD with personality */
+    .what-we-build {
+      background: var(--pure-white);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 0;
+    }
+
+    .project-card {
+      padding: clamp(40px, 6vw, 80px);
+      border: 1px solid rgba(13, 27, 42, 0.08);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      background: var(--soft-white);
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--cyan-glow), var(--warm-accent));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .project-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .project-card:hover {
+      background: var(--pure-white);
+      transform: translateY(-8px);
+      box-shadow: 0 40px 80px rgba(13, 27, 42, 0.12);
+      z-index: 10;
+    }
+
+    .project-number {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      color: var(--cyan-glow);
+      margin-bottom: 32px;
+      display: block;
+      position: relative;
+    }
+
+    .project-title {
+      font-size: clamp(28px, 3vw, 42px);
+      color: var(--deep-navy);
+      margin-bottom: 24px;
+    }
+
+    .project-description {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--slate);
+      margin-bottom: 32px;
+    }
+
+    .project-features {
+      list-style: none;
+      margin-bottom: 40px;
+    }
+
+    .project-features li {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(13, 27, 42, 0.06);
+      font-size: 15px;
+      color: var(--deep-navy);
+      font-weight: 400;
+      position: relative;
+      padding-left: 24px;
+      transition: padding-left 0.3s ease;
+    }
+
+    .project-features li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--cyan-glow);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .project-card:hover .project-features li::before {
+      opacity: 1;
+    }
+
+    .project-meta {
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(13, 27, 42, 0.08);
+    }
+
+    .project-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ice-blue);
+      margin-bottom: 12px;
+    }
+
+    .project-name {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--deep-navy);
+      margin-bottom: 8px;
+    }
+
+    .project-detail {
+      font-size: 14px;
+      color: var(--slate);
+      line-height: 1.7;
+    }
+
+    .project-image {
+      width: 100%;
+      aspect-ratio: 16/10;
+      background: linear-gradient(135deg, #e8e8e8 0%, #d4d4d4 100%);
+      margin-top: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ice-blue);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.6s ease;
+    }
+
+    .project-card:hover .project-image {
+      transform: scale(0.98);
+    }
+
+    .project-image::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
+      animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Special styling for RESONA */
+    .resona-card {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.03) 0%, var(--soft-white) 100%);
+    }
+
+    .resona-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      background: var(--cyan-glow);
+      color: var(--pure-white);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      border-radius: 2px;
+    }
+
+    /* HOW IT WORKS with personality */
+    .how-it-works {
+      background: var(--deep-navy);
+      color: var(--pure-white);
+      overflow: hidden;
+    }
+
+    .how-it-works::before {
+      content: 'PROCESS';
+      position: absolute;
+      top: 10%;
+      right: -5%;
+      font-size: 200px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.02);
+      font-family: 'Cormorant Garamond', serif;
+      transform: rotate(-10deg);
+      pointer-events: none;
+    }
+
+    .how-it-works .section-label {
+      color: var(--cyan-glow);
+    }
+
+    .how-it-works .section-title {
+      color: var(--pure-white);
+    }
+
+    .steps-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: clamp(40px, 6vw, 80px);
+      margin-top: 80px;
+    }
+
+    .step {
+      position: relative;
+    }
+
+    .step-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(80px, 10vw, 140px);
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.08);
+      line-height: 1;
+      margin-bottom: 24px;
+      transition: color 0.6s ease;
+    }
+
+    .step:hover .step-number {
+      color: rgba(6, 182, 212, 0.15);
+    }
+
+    .step-title {
+      font-size: clamp(24px, 3vw, 36px);
+      color: var(--pure-white);
+      margin-bottom: 16px;
+    }
+
+    .step-duration {
+      font-size: 13px;
+      color: var(--cyan-glow);
+      margin-bottom: 24px;
+      letter-spacing: 0.05em;
+      font-weight: 500;
+    }
+
+    .step-description {
+      font-size: 16px;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* WHO IT'S FOR with character */
+    .who-its-for {
+      background: var(--pure-white);
+    }
+
+    .who-its-for::before {
+      content: '?';
+      position: absolute;
+      top: 15%;
+      right: 8%;
+      font-size: 300px;
+      color: rgba(13, 27, 42, 0.02);
+      font-family: 'Cormorant Garamond', serif;
+      pointer-events: none;
+    }
+
+    .who-content {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .who-intro {
+      font-size: clamp(20px, 2.5vw, 28px);
+      line-height: 1.6;
+      color: var(--deep-navy);
+      margin-bottom: 60px;
+      font-weight: 300;
+    }
+
+    .who-list-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: 32px;
+    }
+
+    .who-list {
+      list-style: none;
+    }
+
+    .who-list li {
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(13, 27, 42, 0.08);
+      font-size: 17px;
+      color: var(--slate);
+      position: relative;
+      padding-left: 40px;
+      transition: all 0.3s ease;
+    }
+
+    .who-list li::before {
+      content: '✦';
+      position: absolute;
+      left: 0;
+      color: var(--cyan-glow);
+      font-size: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .who-list li:hover {
+      color: var(--deep-navy);
+      padding-left: 50px;
+    }
+
+    .who-list li:hover::before {
+      transform: rotate(90deg);
+    }
+
+    /* FINAL CTA */
+    .final-cta {
+      background: var(--soft-white);
+      text-align: center;
+      position: relative;
+    }
+
+    .final-cta::before {
+      content: '{ LETS BUILD }';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: clamp(60px, 15vw, 180px);
+      color: rgba(13, 27, 42, 0.02);
+      font-family: 'Courier New', monospace;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .cta-content {
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-title {
+      font-size: clamp(40px, 6vw, 72px);
+      color: var(--deep-navy);
+      margin-bottom: 32px;
+    }
+
+    .cta-subtitle {
+      font-size: 18px;
+      color: var(--slate);
+      margin-bottom: 48px;
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      padding: 20px 50px;
+      background: transparent;
+      color: var(--deep-navy);
+      border: 1px solid var(--deep-navy);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-secondary::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: var(--deep-navy);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+      z-index: -1;
+    }
+
+    .btn-secondary:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn-secondary:hover {
+      color: var(--pure-white);
+      transform: translateY(-3px);
+      border-color: var(--deep-navy);
+    }
+
+    .alternative-contact {
+      font-size: 15px;
+      color: var(--slate);
+    }
+
+    .alternative-contact a {
+      color: var(--deep-navy);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+
+    .alternative-contact a:hover {
+      border-bottom-color: var(--cyan-glow);
+      color: var(--cyan-glow);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--deep-navy);
+      color: var(--pure-white);
+      padding: 80px clamp(24px, 5vw, 80px);
+      text-align: center;
+      position: relative;
+    }
+
+    footer::before {
+      content: '◆';
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--cyan-glow);
+      font-size: 12px;
+      opacity: 0.6;
+    }
+
+    .footer-logo {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      margin-top: 20px;
+      opacity: 0.9;
+    }
+
+    .footer-links {
+      margin-bottom: 32px;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      margin: 0 24px;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .footer-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--cyan-glow);
+      transition: width 0.3s ease;
+    }
+
+    .footer-links a:hover::after {
+      width: 100%;
+    }
+
+    .footer-links a:hover {
+      color: var(--pure-white);
+    }
+
+    .copyright {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 0.05em;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav {
+        padding: 20px 24px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+      }
+
+      nav > div:first-child {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      nav > div:first-child svg {
+        width: 28px;
+        height: 28px;
+      }
+
+      .nav-logo {
+        font-size: 13px;
+        letter-spacing: 0.15em;
+      }
+
+      .nav-tagline {
+        display: none;
+      }
+
+      nav > div:last-child {
+        display: flex;
+        align-items: center;
+      }
+
+      .language-toggle {
+        position: static;
+        padding: 6px 12px;
+      }
+
+      .language-toggle svg:first-child {
+        width: 14px;
+        height: 14px;
+      }
+
+      .language-toggle span {
+        font-size: 12px;
+      }
+
+      section {
+        padding: 60px 0;
+      }
+
+      .hero {
+        padding-top: 120px;
+      }
+
+      .hero::after {
+        font-size: 60px;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .steps-container {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        padding: 16px 36px;
+        font-size: 13px;
+      }
+
+      .footer-links a {
+        display: block;
+        margin: 16px 0;
+      }
+
+      .who-its-for::before,
+      .how-it-works::before,
+      .final-cta::before {
+        display: none;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div style="display: flex; align-items: center; gap: 16px;">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
-                <path d="M18 3L30 9.5V26.5L18 33L6 26.5V9.5L18 3Z" stroke="#06B6D4" stroke-width="1.5" stroke-linejoin="round"/>
-                <path d="M12 12V24M12 18L24 12M12 18L24 24" stroke="#0d1b2a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <div class="nav-logo">Konate Labs</div>
-        </div>
+  <!-- Navigation -->
+  <nav>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+        <path d="M18 3L30 9.5V26.5L18 33L6 26.5V9.5L18 3Z" stroke="#06B6D4" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M12 12V24M12 18L24 12M12 18L24 24" stroke="#0d1b2a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="nav-logo">Konate Labs</div>
+    </div>
+    
+    <div style="display: flex; align-items: center; gap: 32px;">
+      <div class="nav-tagline" id="tagline">Technology with empathy</div>
+      
+      <!-- Language Toggle -->
+      <div class="language-toggle" id="languageToggle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="10" stroke-width="2"/>
+          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke-width="2"/>
+        </svg>
+        <span id="currentLang">EN</span>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+          <path d="M6 8L2 4h8L6 8z"/>
+        </svg>
         
-        <div style="display: flex; align-items: center; gap: 32px;">
-            <div class="nav-tagline" id="tagline">Technology with empathy</div>
-            
-            <!-- Language Toggle -->
-            <div class="language-toggle" id="languageToggle">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <circle cx="12" cy="12" r="10" stroke-width="2"/>
-                    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke-width="2"/>
-                </svg>
-                <span id="currentLang">EN</span>
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
-                    <path d="M6 8L2 4h8L6 8z"/>
-                </svg>
-                
-                <div class="language-dropdown" id="languageDropdown">
-                    <div class="language-option active" data-lang="en">🇺🇸 English</div>
-                    <div class="language-option" data-lang="es">🇪🇸 Español</div>
-                    <div class="language-option" data-lang="fr">🇫🇷 Français</div>
-                </div>
-            </div>
+        <div class="language-dropdown" id="languageDropdown">
+          <div class="language-option active" data-lang="en">🇺🇸 English</div>
+          <div class="language-option" data-lang="es">🇪🇸 Español</div>
+          <div class="language-option" data-lang="fr">🇫🇷 Français</div>
         </div>
-    </nav>
+      </div>
+    </div>
+  </nav>
 
-    <!-- HERO -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="animate-in delay-1">We build intelligent systems that bring clarity to chaos</h1>
-                <p class="hero-subheadline animate-in delay-2">AI-powered operations for entrepreneurs + hardware innovations like the <strong>Focus Cube</strong></p>
-                <a href="https://cal.com/soufi-01yeoz/30min" target="_blank" rel="noopener noreferrer" class="btn-primary animate-in delay-3">Book a Discovery Call</a>
-            </div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="animate-in delay-1">We build intelligent systems that bring clarity to chaos</h1>
+        <p class="hero-subheadline animate-in delay-2">AI-powered operations for entrepreneurs + hardware innovations like the <strong>Focus Cube</strong></p>
+        <a href="https://cal.com/soufi-01yeoz/30min" target="_blank" rel="noopener noreferrer" class="btn-primary animate-in delay-3">Book a Discovery Call</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT WE BUILD -->
+  <section class="what-we-build">
+    <div class="container">
+      <span class="section-label">Our Work</span>
+      <h2 class="section-title">What We Build</h2>
+      
+      <div class="projects-grid">
+        <!-- Project 1: AI Operations -->
+        <div class="project-card">
+          <span class="project-number">01</span>
+          <h3 class="project-title">AI Operations Systems</h3>
+          <p class="project-description">Custom AI assistants, automated workflows, and intelligent dashboards for growing businesses.</p>
+          
+          <ul class="project-features">
+            <li>Custom AI assistants (know your business, answer instantly)</li>
+            <li>Automated workflows (intake, onboarding, status updates)</li>
+            <li>Smart dashboards (all your data, plain English queries)</li>
+          </ul>
+
+          <div class="project-meta">
+            <div class="project-label">Recent Build</div>
+            <div class="project-name">LabTrack AI for SAFER Agrobiológicos</div>
+            <p class="project-detail">Laboratory sample tracking with barcode automation, AI queries, and real-time status tracking.</p>
+          </div>
+
+          <video autoplay loop muted playsinline style="width: 100%; height: auto; margin-top: 32px; border-radius: 0;">
+            <source src="https://i.imgur.com/2ws3yrh.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
         </div>
-    </section>
 
-    <!-- WHAT WE BUILD -->
-    <section class="what-we-build">
-        <div class="container">
-            <span class="section-label">Our Work</span>
-            <h2 class="section-title">What We Build</h2>
-            
-            <div class="projects-grid">
-                <!-- Project 1: AI Operations -->
-                <div class="project-card">
-                    <span class="project-number">01</span>
-                    <h3 class="project-title">AI Operations Systems</h3>
-                    <p class="project-description">Custom AI assistants, automated workflows, and intelligent dashboards for growing businesses.</p>
-                    
-                    <ul class="project-features">
-                        <li>Custom AI assistants (know your business, answer instantly)</li>
-                        <li>Automated workflows (intake, onboarding, status updates)</li>
-                        <li>Smart dashboards (all your data, plain English queries)</li>
-                    </ul>
+        <!-- Project 2: Analytics & Insights -->
+        <div class="project-card">
+          <span class="project-number">02</span>
+          <h3 class="project-title">Analytics & Insights</h3>
+          <p class="project-description">Transform your data into clear narratives that drive better decisions and reveal hidden opportunities.</p>
+          
+          <ul class="project-features">
+            <li>Custom dashboards that tell your business story</li>
+            <li>Automated reports with actionable insights</li>
+            <li>Pattern detection across operations, sales, and customer behavior</li>
+            <li>1-on-1 strategic sessions to uncover hidden potential</li>
+          </ul>
 
-                    <div class="project-meta">
-                        <div class="project-label">Recent Build</div>
-                        <div class="project-name">LabTrack AI for SAFER Agrobiológicos</div>
-                        <p class="project-detail">Laboratory sample tracking with barcode automation, AI queries, and real-time status tracking.</p>
-                    </div>
+          <div class="project-meta">
+            <div class="project-label">Approach</div>
+            <p class="project-detail">Numbers are powerful, but stories are memorable. Through direct collaboration, we help you understand what your data is actually telling youtransforming spreadsheet overwhelm into strategic clarity and confident decision-making.</p>
+          </div>
 
-                    <div class="project-image">LabTrack AI Screenshot</div>
-                </div>
-
-                <!-- Project 2: Analytics & Insights -->
-                <div class="project-card">
-                    <span class="project-number">02</span>
-                    <h3 class="project-title">Analytics & Insights</h3>
-                    <p class="project-description">Transform your data into clear narratives that drive better decisions and reveal hidden opportunities.</p>
-                    
-                    <ul class="project-features">
-                        <li>Custom dashboards that tell your business story</li>
-                        <li>Automated reports with actionable insights</li>
-                        <li>Pattern detection across operations, sales, and customer behavior</li>
-                        <li>1-on-1 strategic sessions to uncover hidden potential</li>
-                    </ul>
-
-                    <div class="project-meta">
-                        <div class="project-label">Approach</div>
-                        <p class="project-detail">Numbers are powerful, but stories are memorable. Through direct collaboration, we help you understand what your data is actually telling you—transforming spreadsheet overwhelm into strategic clarity and confident decision-making.</p>
-                    </div>
-
-                    <div class="project-image">Analytics Dashboard</div>
-                </div>
-
-                <!-- Project 3: Product Innovation (with RESONA) -->
-                <div class="project-card resona-card">
-                    <span class="project-number">03</span>
-                    <h3 class="project-title">Product Innovation</h3>
-                    <p class="project-description">Hardware and software designed to enhance productivity and human potential.</p>
-                    
-                    <div class="project-meta" style="margin-top: 0; padding-top: 0; border-top: none;">
-                        <div class="project-label">Current Focus</div>
-                        <div class="project-name">Focus Cube</div>
-                        <p class="project-detail">Smart productivity device with environmental sensing, breathing exercises, and focus tracking.</p>
-                    </div>
-
-                    <div class="project-meta">
-                        <span class="resona-badge">Creative Technology</span>
-                        <div class="project-name">RESONA</div>
-                        <p class="project-detail">Your Spotify Wrapped data transformed into psychological insights. Multilingual platform exploring the intersection of music taste, personality, and self-discovery. "Therapy through data."</p>
-                    </div>
-
-                    <div class="project-meta">
-                        <div class="project-label">Coming Soon</div>
-                        <ul class="project-features" style="margin-bottom: 0;">
-                            <li>Vocal processing plugins</li>
-                            <li>Wearable technology</li>
-                            <li>Creative tools for makers</li>
-                        </ul>
-                    </div>
-
-                    <div class="project-image">Focus Cube & RESONA</div>
-                </div>
-            </div>
+          <img src="https://i.imgur.com/39TU5lu.png" 
+               alt="Reed Studio analytics dashboard showing project health overview with status distribution" 
+               style="width: 100%; height: auto; margin-top: 32px; border-radius: 0;">
         </div>
-    </section>
 
-    <!-- HOW IT WORKS -->
-    <section class="how-it-works">
-        <div class="container">
-            <span class="section-label">Process</span>
-            <h2 class="section-title">How It Works</h2>
-            
-            <div class="steps-container">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3 class="step-title">Discovery Call</h3>
-                    <p class="step-duration">30 minutes</p>
-                    <p class="step-description">We map your operations and identify the biggest opportunities for AI + automation.</p>
-                </div>
+        <!-- Project 3: Product Innovation (with RESONA) -->
+        <div class="project-card resona-card">
+          <span class="project-number">03</span>
+          <h3 class="project-title">Product Innovation</h3>
+          <p class="project-description">Hardware and software designed to enhance productivity and human potential.</p>
+          
+          <div class="project-meta" style="margin-top: 0; padding-top: 0; border-top: none;">
+            <div class="project-label">Current Focus</div>
+            <div class="project-name">Focus Cube</div>
+            <p class="project-detail">Smart productivity device with environmental sensing, breathing exercises, and focus tracking.</p>
+          </div>
 
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3 class="step-title">We Build Your System</h3>
-                    <p class="step-duration">2-3 weeks</p>
-                    <p class="step-description">Custom AI assistant, automated workflows, and dashboard—tailored to your business.</p>
-                </div>
+          <div class="project-meta">
+            <span class="resona-badge">Creative Technology</span>
+            <div class="project-name">RESONA</div>
+            <p class="project-detail">Your Spotify Wrapped data transformed into psychological insights. Multilingual platform exploring the intersection of music taste, personality, and self-discovery. "Therapy through data."</p>
+          </div>
 
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3 class="step-title">You Focus on Growth</h3>
-                    <p class="step-description">Clarity without chaos. Scale without overwhelm. The system runs while you build.</p>
-                </div>
-            </div>
+          <div class="project-meta">
+            <div class="project-label">Coming Soon</div>
+            <ul class="project-features" style="margin-bottom: 0;">
+              <li>Vocal processing plugins</li>
+              <li>Wearable technology</li>
+              <li>Creative tools for makers</li>
+            </ul>
+          </div>
+
+          <img src="https://i.imgur.com/gZoyYox.png" 
+               alt="RESONA decode your emotional operating system interface with multilingual support" 
+               style="width: 100%; height: auto; margin-top: 32px; border-radius: 0;">
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- WHO IT'S FOR -->
-    <section class="who-its-for">
-        <div class="container">
-            <div class="who-content">
-                <span class="section-label">Ideal Client</span>
-                <h2 class="section-title">Who It's For</h2>
-                
-                <p class="who-intro">Built for entrepreneurs doing $100k-$500k/year who are drowning in manual work and ready to scale with intelligent systems.</p>
-                
-                <p class="who-list-title">Perfect fit if you're:</p>
-                <ul class="who-list">
-                    <li>Juggling 3+ disconnected tools</li>
-                    <li>Spending 10+ hours/week on admin work</li>
-                    <li>Asking "Can AI help with this?"</li>
-                    <li>Ready to invest in operations (not looking for quick fixes)</li>
-                </ul>
-            </div>
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works">
+    <div class="container">
+      <span class="section-label">Process</span>
+      <h2 class="section-title">How It Works</h2>
+      
+      <div class="steps-container">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3 class="step-title">Discovery Call</h3>
+          <p class="step-duration">30 minutes</p>
+          <p class="step-description">We map your operations and identify the biggest opportunities for AI + automation.</p>
         </div>
-    </section>
 
-    <!-- INSIGHTS -->
-    <section class="insights-section" style="background: var(--pure-white); padding: clamp(60px, 10vw, 120px) 0;">
-        <div class="container">
-            <div class="who-content">
-                <span class="section-label">Insights</span>
-                <h2 class="section-title" style="margin-bottom: 40px;">Passport to Process</h2>
-                
-                <p style="font-size: clamp(18px, 2vw, 22px); line-height: 1.7; color: var(--slate); margin-bottom: 40px; font-weight: 300;">
-                    Stories from 65+ countries about building systems, creative technology, and the intersection of AI and human potential.
-                </p>
-                
-                <a href="#" style="display: inline-block; padding: 16px 40px; background: transparent; color: var(--deep-navy); border: 1px solid rgba(13, 27, 42, 0.2); text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.4s ease;">
-                    Read The Blog →
-                </a>
-                <!-- Replace # above with your blog URL when ready (Medium/Substack/etc) -->
-            </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3 class="step-title">We Build Your System</h3>
+          <p class="step-duration">2-3 weeks</p>
+          <p class="step-description">Custom AI assistant, automated workflows, and dashboardtailored to your business.</p>
         </div>
-    </section>
 
-    <!-- FINAL CTA -->
-    <section class="final-cta">
-        <div class="container">
-            <div class="cta-content">
-                <span class="section-label">Get Started</span>
-                <h2 class="cta-title">Taking on 2-3 projects this quarter</h2>
-                <p class="cta-subtitle">Ready to bring clarity to your operations?</p>
-                <a href="https://cal.com/soufi-01yeoz/30min" target="_blank" rel="noopener noreferrer" class="btn-secondary">Book a Discovery Call</a>
-                <p class="alternative-contact">or email: <a href="mailto:issouf@konate-labs.com">issouf@konate-labs.com</a></p>
-            </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3 class="step-title">You Focus on Growth</h3>
+          <p class="step-description">Clarity without chaos. Scale without overwhelm. The system runs while you build.</p>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- FOOTER -->
-    <footer>
-        <div class="footer-logo">Konate Labs</div>
-        <div class="footer-links">
-            <a href="#">LinkedIn</a>
-            <a href="mailto:issouf@konate-labs.com">Email</a>
-        </div>
-        <div class="copyright">© 2025 Konate Labs</div>
-    </footer>
-
-    <script>
-        // Trilingual Language Toggle (EN/ES/FR)
-        const toggle = document.getElementById('languageToggle');
-        const currentLangSpan = document.getElementById('currentLang');
-        const options = document.querySelectorAll('.language-option');
+  <!-- WHO IT'S FOR -->
+  <section class="who-its-for">
+    <div class="container">
+      <div class="who-content">
+        <span class="section-label">Ideal Client</span>
+        <h2 class="section-title">Who It's For</h2>
         
-        toggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggle.classList.toggle('active');
-        });
+        <p class="who-intro">Built for entrepreneurs doing $100k-$500k/year who are drowning in manual work and ready to scale with intelligent systems.</p>
         
-        document.addEventListener('click', () => {
-            toggle.classList.remove('active');
-        });
+        <p class="who-list-title">Perfect fit if you're:</p>
+        <ul class="who-list">
+          <li>Juggling 3+ disconnected tools</li>
+          <li>Spending 10+ hours/week on admin work</li>
+          <li>Asking "Can AI help with this?"</li>
+          <li>Ready to invest in operations (not looking for quick fixes)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSIGHTS -->
+  <section class="insights-section" style="background: var(--pure-white); padding: clamp(60px, 10vw, 120px) 0;">
+    <div class="container">
+      <div class="who-content">
+        <span class="section-label">Insights</span>
+        <h2 class="section-title" style="margin-bottom: 40px;">Passport to Process</h2>
         
-        let currentLanguage = 'en';
+        <p style="font-size: clamp(18px, 2vw, 22px); line-height: 1.7; color: var(--slate); margin-bottom: 40px; font-weight: 300;">
+          Stories from 65+ countries about building systems, creative technology, and the intersection of AI and human potential.
+        </p>
         
-        const translations = {
-            en: {
-                tagline: "Technology with empathy",
-                heroTitle: "We build intelligent systems that bring clarity to chaos",
-                heroSubtitle: "AI-powered operations for entrepreneurs + hardware innovations like the <strong>Focus Cube</strong>",
-                ctaButton: "Book a Discovery Call",
-                ourWorkLabel: "Our Work",
-                whatWeBuildTitle: "What We Build",
-                project1Number: "01",
-                project1Title: "AI Operations Systems",
-                project1Desc: "Custom AI assistants, automated workflows, and intelligent dashboards for growing businesses.",
-                project1Feature1: "Custom AI assistants (know your business, answer instantly)",
-                project1Feature2: "Automated workflows (intake, onboarding, status updates)",
-                project1Feature3: "Smart dashboards (all your data, plain English queries)",
-                project1Feature4: "1-on-1 strategic sessions to uncover hidden potential",
-                project1MetaLabel: "Approach",
-                project1MetaDetail: "Numbers are powerful, but stories are memorable. Through direct collaboration, we help you understand what your data is actually telling you—transforming spreadsheet overwhelm into strategic clarity and confident decision-making.",
-                project1BuildLabel: "Recent Build",
-                project1BuildName: "LabTrack AI for SAFER Agrobiológicos",
-                project1BuildDetail: "Laboratory sample tracking with barcode automation, AI queries, and real-time status tracking.",
-                project2Number: "02",
-                project2Title: "Analytics & Insights",
-                project2Desc: "Transform your data into clear narratives that drive better decisions and reveal hidden opportunities.",
-                project2Feature1: "Custom dashboards that tell your business story",
-                project2Feature2: "Automated reports with actionable insights",
-                project2Feature3: "Pattern detection across operations, sales, and customer behavior",
-                project2Feature4: "1-on-1 strategic sessions to uncover hidden potential",
-                project3Number: "03",
-                project3Title: "Product Innovation",
-                project3Desc: "Hardware and software designed to enhance productivity and human potential.",
-                project3FocusLabel: "Current Focus",
-                project3FocusName: "Focus Cube",
-                project3FocusDetail: "Smart productivity device with environmental sensing, breathing exercises, and focus tracking.",
-                project3ResonaBadge: "Creative Technology",
-                project3ResonaName: "RESONA",
-                project3ResonaDetail: 'Your Spotify Wrapped data transformed into psychological insights. Multilingual platform exploring the intersection of music taste, personality, and self-discovery. "Therapy through data."',
-                project3ComingSoonLabel: "Coming Soon",
-                project3ComingSoon1: "Vocal processing plugins",
-                project3ComingSoon2: "Wearable technology",
-                project3ComingSoon3: "Creative tools for makers",
-                processLabel: "Process",
-                howItWorksTitle: "How It Works",
-                step1Title: "Discovery Call",
-                step1Duration: "30 minutes",
-                step1Desc: "We map your operations and identify the biggest opportunities for AI + automation.",
-                step2Title: "We Build Your System",
-                step2Duration: "2-3 weeks",
-                step2Desc: "Custom AI assistant, automated workflows, and dashboard—tailored to your business.",
-                step3Title: "You Focus on Growth",
-                step3Desc: "Clarity without chaos. Scale without overwhelm. The system runs while you build.",
-                idealClientLabel: "Ideal Client",
-                whoItsForTitle: "Who It's For",
-                whoIntro: "Built for entrepreneurs doing $100k-$500k/year who are drowning in manual work and ready to scale with intelligent systems.",
-                whoListTitle: "Perfect fit if you're:",
-                whoItem1: "Juggling 3+ disconnected tools",
-                whoItem2: "Spending 10+ hours/week on admin work",
-                whoItem3: 'Asking "Can AI help with this?"',
-                whoItem4: "Ready to invest in operations (not looking for quick fixes)",
-                insightsLabel: "Insights",
-                insightsTitle: "Passport to Process",
-                insightsDesc: "Stories from 65+ countries about building systems, creative technology, and the intersection of AI and human potential.",
-                insightsButton: "Read The Blog →",
-                getStartedLabel: "Get Started",
-                ctaTitle: "Taking on 2-3 projects this quarter",
-                ctaSubtitle: "Ready to bring clarity to your operations?",
-                altContact: "or email:"
-            },
-            es: {
-                tagline: "Tecnología con empatía",
-                heroTitle: "Construimos sistemas inteligentes que traen claridad al caos",
-                heroSubtitle: "Operaciones impulsadas por IA para emprendedores + innovaciones de hardware como el <strong>Focus Cube</strong>",
-                ctaButton: "Reservar una Llamada",
-                ourWorkLabel: "Nuestro Trabajo",
-                whatWeBuildTitle: "Qué Construimos",
-                project1Number: "01",
-                project1Title: "Sistemas de Operaciones con IA",
-                project1Desc: "Asistentes de IA personalizados, flujos de trabajo automatizados y paneles inteligentes para negocios en crecimiento.",
-                project1Feature1: "Asistentes de IA personalizados (conocen tu negocio, responden al instante)",
-                project1Feature2: "Flujos de trabajo automatizados (ingreso, incorporación, actualizaciones)",
-                project1Feature3: "Paneles inteligentes (todos tus datos, consultas en lenguaje natural)",
-                project1Feature4: "Sesiones estratégicas 1-a-1 para descubrir potencial oculto",
-                project1MetaLabel: "Enfoque",
-                project1MetaDetail: "Los números son poderosos, pero las historias son memorables. A través de colaboración directa, te ayudamos a entender lo que tus datos realmente te están diciendo—transformando el agobio de las hojas de cálculo en claridad estratégica y toma de decisiones segura.",
-                project1BuildLabel: "Construcción Reciente",
-                project1BuildName: "LabTrack AI para SAFER Agrobiológicos",
-                project1BuildDetail: "Seguimiento de muestras de laboratorio con automatización de códigos de barras, consultas de IA y rastreo en tiempo real.",
-                project2Number: "02",
-                project2Title: "Análisis e Insights",
-                project2Desc: "Transforma tus datos en narrativas claras que impulsan mejores decisiones y revelan oportunidades ocultas.",
-                project2Feature1: "Paneles personalizados que cuentan la historia de tu negocio",
-                project2Feature2: "Informes automatizados con insights accionables",
-                project2Feature3: "Detección de patrones en operaciones, ventas y comportamiento del cliente",
-                project2Feature4: "Sesiones estratégicas 1-a-1 para descubrir potencial oculto",
-                project3Number: "03",
-                project3Title: "Innovación de Productos",
-                project3Desc: "Hardware y software diseñados para mejorar la productividad y el potencial humano.",
-                project3FocusLabel: "Enfoque Actual",
-                project3FocusName: "Focus Cube",
-                project3FocusDetail: "Dispositivo de productividad inteligente con sensores ambientales, ejercicios de respiración y seguimiento de enfoque.",
-                project3ResonaBadge: "Tecnología Creativa",
-                project3ResonaName: "RESONA",
-                project3ResonaDetail: 'Tus datos de Spotify Wrapped transformados en insights psicológicos. Plataforma multilingüe que explora la intersección del gusto musical, personalidad y autodescubrimiento. "Terapia a través de datos."',
-                project3ComingSoonLabel: "Próximamente",
-                project3ComingSoon1: "Plugins de procesamiento vocal",
-                project3ComingSoon2: "Tecnología ponible",
-                project3ComingSoon3: "Herramientas creativas para makers",
-                processLabel: "Proceso",
-                howItWorksTitle: "Cómo Funciona",
-                step1Title: "Llamada de Descubrimiento",
-                step1Duration: "30 minutos",
-                step1Desc: "Mapeamos tus operaciones e identificamos las mayores oportunidades para IA + automatización.",
-                step2Title: "Construimos Tu Sistema",
-                step2Duration: "2-3 semanas",
-                step2Desc: "Asistente de IA personalizado, flujos de trabajo automatizados y panel—adaptado a tu negocio.",
-                step3Title: "Te Enfocas en Crecer",
-                step3Desc: "Claridad sin caos. Escala sin agobio. El sistema funciona mientras tú construyes.",
-                idealClientLabel: "Cliente Ideal",
-                whoItsForTitle: "Para Quién Es",
-                whoIntro: "Construido para emprendedores facturando $100k-$500k/año que se ahogan en trabajo manual y están listos para escalar con sistemas inteligentes.",
-                whoListTitle: "Perfecto si estás:",
-                whoItem1: "Haciendo malabarismos con 3+ herramientas desconectadas",
-                whoItem2: "Gastando 10+ horas/semana en trabajo administrativo",
-                whoItem3: '¿Preguntando "Puede la IA ayudar con esto?"',
-                whoItem4: "Listo para invertir en operaciones (no buscas soluciones rápidas)",
-                insightsLabel: "Perspectivas",
-                insightsTitle: "Pasaporte al Proceso",
-                insightsDesc: "Historias de 65+ países sobre construcción de sistemas, tecnología creativa y la intersección de IA y potencial humano.",
-                insightsButton: "Leer el Blog →",
-                getStartedLabel: "Comenzar",
-                ctaTitle: "Aceptando 2-3 proyectos este trimestre",
-                ctaSubtitle: "¿Listo para traer claridad a tus operaciones?",
-                altContact: "o email:"
-            },
-            fr: {
-                tagline: "Technologie avec empathie",
-                heroTitle: "Nous construisons des systèmes intelligents qui apportent de la clarté au chaos",
-                heroSubtitle: "Opérations alimentées par l'IA pour entrepreneurs + innovations matérielles comme le <strong>Focus Cube</strong>",
-                ctaButton: "Réserver un Appel",
-                ourWorkLabel: "Notre Travail",
-                whatWeBuildTitle: "Ce Que Nous Construisons",
-                project1Number: "01",
-                project1Title: "Systèmes d'Opérations IA",
-                project1Desc: "Assistants IA personnalisés, flux de travail automatisés et tableaux de bord intelligents pour entreprises en croissance.",
-                project1Feature1: "Assistants IA personnalisés (connaissent votre entreprise, répondent instantanément)",
-                project1Feature2: "Flux de travail automatisés (admission, intégration, mises à jour)",
-                project1Feature3: "Tableaux de bord intelligents (toutes vos données, requêtes en langage naturel)",
-                project1Feature4: "Sessions stratégiques 1-à-1 pour découvrir le potentiel caché",
-                project1MetaLabel: "Approche",
-                project1MetaDetail: "Les chiffres sont puissants, mais les histoires sont mémorables. Grâce à une collaboration directe, nous vous aidons à comprendre ce que vos données vous disent réellement—transformant la surcharge des feuilles de calcul en clarté stratégique et prise de décision confiante.",
-                project1BuildLabel: "Construction Récente",
-                project1BuildName: "LabTrack AI pour SAFER Agrobiológicos",
-                project1BuildDetail: "Suivi d'échantillons de laboratoire avec automatisation de codes-barres, requêtes IA et suivi en temps réel.",
-                project2Number: "02",
-                project2Title: "Analyses & Insights",
-                project2Desc: "Transformez vos données en récits clairs qui stimulent de meilleures décisions et révèlent des opportunités cachées.",
-                project2Feature1: "Tableaux de bord personnalisés qui racontent l'histoire de votre entreprise",
-                project2Feature2: "Rapports automatisés avec insights actionnables",
-                project2Feature3: "Détection de modèles dans les opérations, les ventes et le comportement client",
-                project2Feature4: "Sessions stratégiques 1-à-1 pour découvrir le potentiel caché",
-                project3Number: "03",
-                project3Title: "Innovation Produit",
-                project3Desc: "Matériel et logiciels conçus pour améliorer la productivité et le potentiel humain.",
-                project3FocusLabel: "Focus Actuel",
-                project3FocusName: "Focus Cube",
-                project3FocusDetail: "Appareil de productivité intelligent avec détection environnementale, exercices de respiration et suivi de concentration.",
-                project3ResonaBadge: "Technologie Créative",
-                project3ResonaName: "RESONA",
-                project3ResonaDetail: 'Vos données Spotify Wrapped transformées en insights psychologiques. Plateforme multilingue explorant l\'intersection du goût musical, de la personnalité et de la découverte de soi. "Thérapie par les données."',
-                project3ComingSoonLabel: "Bientôt Disponible",
-                project3ComingSoon1: "Plugins de traitement vocal",
-                project3ComingSoon2: "Technologie portable",
-                project3ComingSoon3: "Outils créatifs pour makers",
-                processLabel: "Processus",
-                howItWorksTitle: "Comment Ça Marche",
-                step1Title: "Appel de Découverte",
-                step1Duration: "30 minutes",
-                step1Desc: "Nous cartographions vos opérations et identifions les plus grandes opportunités pour l'IA + l'automatisation.",
-                step2Title: "Nous Construisons Votre Système",
-                step2Duration: "2-3 semaines",
-                step2Desc: "Assistant IA personnalisé, flux de travail automatisés et tableau de bord—adapté à votre entreprise.",
-                step3Title: "Vous Vous Concentrez sur la Croissance",
-                step3Desc: "Clarté sans chaos. Croissance sans surcharge. Le système fonctionne pendant que vous construisez.",
-                idealClientLabel: "Client Idéal",
-                whoItsForTitle: "Pour Qui",
-                whoIntro: "Conçu pour les entrepreneurs réalisant $100k-$500k/an qui se noient dans le travail manuel et sont prêts à évoluer avec des systèmes intelligents.",
-                whoListTitle: "Parfait si vous êtes:",
-                whoItem1: "Jonglant avec 3+ outils déconnectés",
-                whoItem2: "Dépensant 10+ heures/semaine sur le travail administratif",
-                whoItem3: 'Vous demandez "L\'IA peut-elle aider avec ça?"',
-                whoItem4: "Prêt à investir dans les opérations (pas de solutions rapides)",
-                insightsLabel: "Perspectives",
-                insightsTitle: "Passeport au Processus",
-                insightsDesc: "Histoires de 65+ pays sur la construction de systèmes, la technologie créative et l'intersection de l'IA et du potentiel humain.",
-                insightsButton: "Lire le Blog →",
-                getStartedLabel: "Commencer",
-                ctaTitle: "Acceptant 2-3 projets ce trimestre",
-                ctaSubtitle: "Prêt à apporter de la clarté à vos opérations?",
-                altContact: "ou email:"
-            }
-        };
+        <a href="#" style="display: inline-block; padding: 16px 40px; background: transparent; color: var(--deep-navy); border: 1px solid rgba(13, 27, 42, 0.2); text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.4s ease;">
+          Read The Blog →
+        </a>
+        <!-- Replace # above with your blog URL when ready (Medium/Substack/etc) -->
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta">
+    <div class="container">
+      <div class="cta-content">
+        <span class="section-label">Get Started</span>
+        <h2 class="cta-title">Taking on 2-3 projects this quarter</h2>
+        <p class="cta-subtitle">Ready to bring clarity to your operations?</p>
+        <a href="https://cal.com/soufi-01yeoz/30min" target="_blank" rel="noopener noreferrer" class="btn-secondary">Book a Discovery Call</a>
+        <p class="alternative-contact">or email: <a href="/cdn-cgi/l/email-protection#355c46465a4053755e5a5b54415018595457461b565a58"><span class="__cf_email__" data-cfemail="e9809a9a869c8fa9828687889d8cc485888b9ac78a8684">[email&#160;protected]</span></a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Konate Labs</div>
+    <div class="footer-links">
+      <a href="#">LinkedIn</a>
+      <a href="/cdn-cgi/l/email-protection#442d37372b3122042f2b2a25302169282526376a272b29">Email</a>
+    </div>
+    <div class="copyright">© 2025 Konate Labs</div>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // Trilingual Language Toggle (EN/ES/FR)
+    const toggle = document.getElementById('languageToggle');
+    const currentLangSpan = document.getElementById('currentLang');
+    const options = document.querySelectorAll('.language-option');
+    
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggle.classList.toggle('active');
+    });
+    
+    document.addEventListener('click', () => {
+      toggle.classList.remove('active');
+    });
+    
+    let currentLanguage = 'en';
+    
+    const translations = {
+      en: {
+        tagline: "Technology with empathy",
+        heroTitle: "We build intelligent systems that bring clarity to chaos",
+        heroSubtitle: "AI-powered operations for entrepreneurs + hardware innovations like the <strong>Focus Cube</strong>",
+        ctaButton: "Book a Discovery Call",
+        ourWorkLabel: "Our Work",
+        whatWeBuildTitle: "What We Build",
+        project1Number: "01",
+        project1Title: "AI Operations Systems",
+        project1Desc: "Custom AI assistants, automated workflows, and intelligent dashboards for growing businesses.",
+        project1Feature1: "Custom AI assistants (know your business, answer instantly)",
+        project1Feature2: "Automated workflows (intake, onboarding, status updates)",
+        project1Feature3: "Smart dashboards (all your data, plain English queries)",
+        project1Feature4: "1-on-1 strategic sessions to uncover hidden potential",
+        project1MetaLabel: "Approach",
+        project1MetaDetail: "Numbers are powerful, but stories are memorable. Through direct collaboration, we help you understand what your data is actually telling youtransforming spreadsheet overwhelm into strategic clarity and confident decision-making.",
+        project1BuildLabel: "Recent Build",
+        project1BuildName: "LabTrack AI for SAFER Agrobiológicos",
+        project1BuildDetail: "Laboratory sample tracking with barcode automation, AI queries, and real-time status tracking.",
+        project2Number: "02",
+        project2Title: "Analytics & Insights",
+        project2Desc: "Transform your data into clear narratives that drive better decisions and reveal hidden opportunities.",
+        project2Feature1: "Custom dashboards that tell your business story",
+        project2Feature2: "Automated reports with actionable insights",
+        project2Feature3: "Pattern detection across operations, sales, and customer behavior",
+        project2Feature4: "1-on-1 strategic sessions to uncover hidden potential",
+        project3Number: "03",
+        project3Title: "Product Innovation",
+        project3Desc: "Hardware and software designed to enhance productivity and human potential.",
+        project3FocusLabel: "Current Focus",
+        project3FocusName: "Focus Cube",
+        project3FocusDetail: "Smart productivity device with environmental sensing, breathing exercises, and focus tracking.",
+        project3ResonaBadge: "Creative Technology",
+        project3ResonaName: "RESONA",
+        project3ResonaDetail: 'Your Spotify Wrapped data transformed into psychological insights. Multilingual platform exploring the intersection of music taste, personality, and self-discovery. "Therapy through data."',
+        project3ComingSoonLabel: "Coming Soon",
+        project3ComingSoon1: "Vocal processing plugins",
+        project3ComingSoon2: "Wearable technology",
+        project3ComingSoon3: "Creative tools for makers",
+        processLabel: "Process",
+        howItWorksTitle: "How It Works",
+        step1Title: "Discovery Call",
+        step1Duration: "30 minutes",
+        step1Desc: "We map your operations and identify the biggest opportunities for AI + automation.",
+        step2Title: "We Build Your System",
+        step2Duration: "2-3 weeks",
+        step2Desc: "Custom AI assistant, automated workflows, and dashboardtailored to your business.",
+        step3Title: "You Focus on Growth",
+        step3Desc: "Clarity without chaos. Scale without overwhelm. The system runs while you build.",
+        idealClientLabel: "Ideal Client",
+        whoItsForTitle: "Who It's For",
+        whoIntro: "Built for entrepreneurs doing $100k-$500k/year who are drowning in manual work and ready to scale with intelligent systems.",
+        whoListTitle: "Perfect fit if you're:",
+        whoItem1: "Juggling 3+ disconnected tools",
+        whoItem2: "Spending 10+ hours/week on admin work",
+        whoItem3: 'Asking "Can AI help with this?"',
+        whoItem4: "Ready to invest in operations (not looking for quick fixes)",
+        insightsLabel: "Insights",
+        insightsTitle: "Passport to Process",
+        insightsDesc: "Stories from 65+ countries about building systems, creative technology, and the intersection of AI and human potential.",
+        insightsButton: "Read The Blog →",
+        getStartedLabel: "Get Started",
+        ctaTitle: "Taking on 2-3 projects this quarter",
+        ctaSubtitle: "Ready to bring clarity to your operations?",
+        altContact: "or email:"
+      },
+      es: {
+        tagline: "Tecnología con empatía",
+        heroTitle: "Construimos sistemas inteligentes que traen claridad al caos",
+        heroSubtitle: "Operaciones impulsadas por IA para emprendedores + innovaciones de hardware como el <strong>Focus Cube</strong>",
+        ctaButton: "Reservar una Llamada",
+        ourWorkLabel: "Nuestro Trabajo",
+        whatWeBuildTitle: "Qué Construimos",
+        project1Number: "01",
+        project1Title: "Sistemas de Operaciones con IA",
+        project1Desc: "Asistentes de IA personalizados, flujos de trabajo automatizados y paneles inteligentes para negocios en crecimiento.",
+        project1Feature1: "Asistentes de IA personalizados (conocen tu negocio, responden al instante)",
+        project1Feature2: "Flujos de trabajo automatizados (ingreso, incorporación, actualizaciones)",
+        project1Feature3: "Paneles inteligentes (todos tus datos, consultas en lenguaje natural)",
+        project1Feature4: "Sesiones estratégicas 1-a-1 para descubrir potencial oculto",
+        project1MetaLabel: "Enfoque",
+        project1MetaDetail: "Los números son poderosos, pero las historias son memorables. A través de colaboración directa, te ayudamos a entender lo que tus datos realmente te están diciendotransformando el agobio de las hojas de cálculo en claridad estratégica y toma de decisiones segura.",
+        project1BuildLabel: "Construcción Reciente",
+        project1BuildName: "LabTrack AI para SAFER Agrobiológicos",
+        project1BuildDetail: "Seguimiento de muestras de laboratorio con automatización de códigos de barras, consultas de IA y rastreo en tiempo real.",
+        project2Number: "02",
+        project2Title: "Análisis e Insights",
+        project2Desc: "Transforma tus datos en narrativas claras que impulsan mejores decisiones y revelan oportunidades ocultas.",
+        project2Feature1: "Paneles personalizados que cuentan la historia de tu negocio",
+        project2Feature2: "Informes automatizados con insights accionables",
+        project2Feature3: "Detección de patrones en operaciones, ventas y comportamiento del cliente",
+        project2Feature4: "Sesiones estratégicas 1-a-1 para descubrir potencial oculto",
+        project3Number: "03",
+        project3Title: "Innovación de Productos",
+        project3Desc: "Hardware y software diseñados para mejorar la productividad y el potencial humano.",
+        project3FocusLabel: "Enfoque Actual",
+        project3FocusName: "Focus Cube",
+        project3FocusDetail: "Dispositivo de productividad inteligente con sensores ambientales, ejercicios de respiración y seguimiento de enfoque.",
+        project3ResonaBadge: "Tecnología Creativa",
+        project3ResonaName: "RESONA",
+        project3ResonaDetail: 'Tus datos de Spotify Wrapped transformados en insights psicológicos. Plataforma multilingüe que explora la intersección del gusto musical, personalidad y autodescubrimiento. "Terapia a través de datos."',
+        project3ComingSoonLabel: "Próximamente",
+        project3ComingSoon1: "Plugins de procesamiento vocal",
+        project3ComingSoon2: "Tecnología ponible",
+        project3ComingSoon3: "Herramientas creativas para makers",
+        processLabel: "Proceso",
+        howItWorksTitle: "Cómo Funciona",
+        step1Title: "Llamada de Descubrimiento",
+        step1Duration: "30 minutos",
+        step1Desc: "Mapeamos tus operaciones e identificamos las mayores oportunidades para IA + automatización.",
+        step2Title: "Construimos Tu Sistema",
+        step2Duration: "2-3 semanas",
+        step2Desc: "Asistente de IA personalizado, flujos de trabajo automatizados y paneladaptado a tu negocio.",
+        step3Title: "Te Enfocas en Crecer",
+        step3Desc: "Claridad sin caos. Escala sin agobio. El sistema funciona mientras tú construyes.",
+        idealClientLabel: "Cliente Ideal",
+        whoItsForTitle: "Para Quién Es",
+        whoIntro: "Construido para emprendedores facturando $100k-$500k/año que se ahogan en trabajo manual y están listos para escalar con sistemas inteligentes.",
+        whoListTitle: "Perfecto si estás:",
+        whoItem1: "Haciendo malabarismos con 3+ herramientas desconectadas",
+        whoItem2: "Gastando 10+ horas/semana en trabajo administrativo",
+        whoItem3: '¿Preguntando "Puede la IA ayudar con esto?"',
+        whoItem4: "Listo para invertir en operaciones (no buscas soluciones rápidas)",
+        insightsLabel: "Perspectivas",
+        insightsTitle: "Pasaporte al Proceso",
+        insightsDesc: "Historias de 65+ países sobre construcción de sistemas, tecnología creativa y la intersección de IA y potencial humano.",
+        insightsButton: "Leer el Blog →",
+        getStartedLabel: "Comenzar",
+        ctaTitle: "Aceptando 2-3 proyectos este trimestre",
+        ctaSubtitle: "¿Listo para traer claridad a tus operaciones?",
+        altContact: "o email:"
+      },
+      fr: {
+        tagline: "Technologie avec empathie",
+        heroTitle: "Nous construisons des systèmes intelligents qui apportent de la clarté au chaos",
+        heroSubtitle: "Opérations alimentées par l'IA pour entrepreneurs + innovations matérielles comme le <strong>Focus Cube</strong>",
+        ctaButton: "Réserver un Appel",
+        ourWorkLabel: "Notre Travail",
+        whatWeBuildTitle: "Ce Que Nous Construisons",
+        project1Number: "01",
+        project1Title: "Systèmes d'Opérations IA",
+        project1Desc: "Assistants IA personnalisés, flux de travail automatisés et tableaux de bord intelligents pour entreprises en croissance.",
+        project1Feature1: "Assistants IA personnalisés (connaissent votre entreprise, répondent instantanément)",
+        project1Feature2: "Flux de travail automatisés (admission, intégration, mises à jour)",
+        project1Feature3: "Tableaux de bord intelligents (toutes vos données, requêtes en langage naturel)",
+        project1Feature4: "Sessions stratégiques 1-à-1 pour découvrir le potentiel caché",
+        project1MetaLabel: "Approche",
+        project1MetaDetail: "Les chiffres sont puissants, mais les histoires sont mémorables. Grâce à une collaboration directe, nous vous aidons à comprendre ce que vos données vous disent réellementtransformant la surcharge des feuilles de calcul en clarté stratégique et prise de décision confiante.",
+        project1BuildLabel: "Construction Récente",
+        project1BuildName: "LabTrack AI pour SAFER Agrobiológicos",
+        project1BuildDetail: "Suivi d'échantillons de laboratoire avec automatisation de codes-barres, requêtes IA et suivi en temps réel.",
+        project2Number: "02",
+        project2Title: "Analyses & Insights",
+        project2Desc: "Transformez vos données en récits clairs qui stimulent de meilleures décisions et révèlent des opportunités cachées.",
+        project2Feature1: "Tableaux de bord personnalisés qui racontent l'histoire de votre entreprise",
+        project2Feature2: "Rapports automatisés avec insights actionnables",
+        project2Feature3: "Détection de modèles dans les opérations, les ventes et le comportement client",
+        project2Feature4: "Sessions stratégiques 1-à-1 pour découvrir le potentiel caché",
+        project3Number: "03",
+        project3Title: "Innovation Produit",
+        project3Desc: "Matériel et logiciels conçus pour améliorer la productivité et le potentiel humain.",
+        project3FocusLabel: "Focus Actuel",
+        project3FocusName: "Focus Cube",
+        project3FocusDetail: "Appareil de productivité intelligent avec détection environnementale, exercices de respiration et suivi de concentration.",
+        project3ResonaBadge: "Technologie Créative",
+        project3ResonaName: "RESONA",
+        project3ResonaDetail: 'Vos données Spotify Wrapped transformées en insights psychologiques. Plateforme multilingue explorant l\'intersection du goût musical, de la personnalité et de la découverte de soi. "Thérapie par les données."',
+        project3ComingSoonLabel: "Bientôt Disponible",
+        project3ComingSoon1: "Plugins de traitement vocal",
+        project3ComingSoon2: "Technologie portable",
+        project3ComingSoon3: "Outils créatifs pour makers",
+        processLabel: "Processus",
+        howItWorksTitle: "Comment Ça Marche",
+        step1Title: "Appel de Découverte",
+        step1Duration: "30 minutes",
+        step1Desc: "Nous cartographions vos opérations et identifions les plus grandes opportunités pour l'IA + l'automatisation.",
+        step2Title: "Nous Construisons Votre Système",
+        step2Duration: "2-3 semaines",
+        step2Desc: "Assistant IA personnalisé, flux de travail automatisés et tableau de bordadapté à votre entreprise.",
+        step3Title: "Vous Vous Concentrez sur la Croissance",
+        step3Desc: "Clarté sans chaos. Croissance sans surcharge. Le système fonctionne pendant que vous construisez.",
+        idealClientLabel: "Client Idéal",
+        whoItsForTitle: "Pour Qui",
+        whoIntro: "Conçu pour les entrepreneurs réalisant $100k-$500k/an qui se noient dans le travail manuel et sont prêts à évoluer avec des systèmes intelligents.",
+        whoListTitle: "Parfait si vous êtes:",
+        whoItem1: "Jonglant avec 3+ outils déconnectés",
+        whoItem2: "Dépensant 10+ heures/semaine sur le travail administratif",
+        whoItem3: 'Vous demandez "L\'IA peut-elle aider avec ça?"',
+        whoItem4: "Prêt à investir dans les opérations (pas de solutions rapides)",
+        insightsLabel: "Perspectives",
+        insightsTitle: "Passeport au Processus",
+        insightsDesc: "Histoires de 65+ pays sur la construction de systèmes, la technologie créative et l'intersection de l'IA et du potentiel humain.",
+        insightsButton: "Lire le Blog →",
+        getStartedLabel: "Commencer",
+        ctaTitle: "Acceptant 2-3 projets ce trimestre",
+        ctaSubtitle: "Prêt à apporter de la clarté à vos opérations?",
+        altContact: "ou email:"
+      }
+    };
+    
+    options.forEach(option => {
+      option.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const lang = option.dataset.lang;
         
-        options.forEach(option => {
-            option.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const lang = option.dataset.lang;
-                
-                if (lang !== currentLanguage) {
-                    currentLanguage = lang;
-                    currentLangSpan.textContent = lang.toUpperCase();
-                    
-                    options.forEach(opt => opt.classList.remove('active'));
-                    option.classList.add('active');
-                    
-                    translatePage(lang);
-                }
-                
-                toggle.classList.remove('active');
-            });
-        });
-        
-        function translatePage(lang) {
-            const t = translations[lang];
-            
-            // Helper function to safely update text
-            function safeUpdate(selector, text, isHTML = false) {
-                const el = document.querySelector(selector);
-                if (el) {
-                    if (isHTML) {
-                        el.innerHTML = text;
-                    } else {
-                        el.textContent = text;
-                    }
-                }
-            }
-            
-            function safeUpdateAll(selector, textArray, isHTML = false) {
-                const elements = document.querySelectorAll(selector);
-                textArray.forEach((text, index) => {
-                    if (elements[index]) {
-                        if (isHTML) {
-                            elements[index].innerHTML = text;
-                        } else {
-                            elements[index].textContent = text;
-                        }
-                    }
-                });
-            }
-            
-            // Nav
-            safeUpdate('#tagline', t.tagline);
-            
-            // Hero
-            safeUpdate('.hero h1', t.heroTitle);
-            safeUpdate('.hero-subheadline', t.heroSubtitle, true);
-            document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
-                btn.textContent = t.ctaButton;
-            });
-            
-            // What We Build Section
-            safeUpdateAll('.section-label', [t.ourWorkLabel, t.processLabel, t.idealClientLabel, t.insightsLabel, t.getStartedLabel]);
-            safeUpdateAll('.section-title', [t.whatWeBuildTitle, t.howItWorksTitle, t.whoItsForTitle, t.insightsTitle]);
-            
-            // PROJECT 1 - AI Operations
-            const projects = document.querySelectorAll('.project-card');
-            if (projects[0]) {
-                const p1 = projects[0];
-                const p1Num = p1.querySelector('.project-number');
-                const p1Title = p1.querySelector('.project-title');
-                const p1Desc = p1.querySelector('.project-description');
-                const p1Features = p1.querySelectorAll('.project-features li');
-                const p1Labels = p1.querySelectorAll('.project-label');
-                const p1Names = p1.querySelectorAll('.project-name');
-                const p1Details = p1.querySelectorAll('.project-detail');
-                
-                if (p1Num) p1Num.textContent = t.project1Number;
-                if (p1Title) p1Title.textContent = t.project1Title;
-                if (p1Desc) p1Desc.textContent = t.project1Desc;
-                if (p1Features[0]) p1Features[0].textContent = t.project1Feature1;
-                if (p1Features[1]) p1Features[1].textContent = t.project1Feature2;
-                if (p1Features[2]) p1Features[2].textContent = t.project1Feature3;
-                if (p1Labels[0]) p1Labels[0].textContent = t.project1BuildLabel;
-                if (p1Names[0]) p1Names[0].textContent = t.project1BuildName;
-                if (p1Details[0]) p1Details[0].textContent = t.project1BuildDetail;
-            }
-            
-            // PROJECT 2 - Analytics
-            if (projects[1]) {
-                const p2 = projects[1];
-                const p2Num = p2.querySelector('.project-number');
-                const p2Title = p2.querySelector('.project-title');
-                const p2Desc = p2.querySelector('.project-description');
-                const p2Features = p2.querySelectorAll('.project-features li');
-                const p2Labels = p2.querySelectorAll('.project-label');
-                const p2Details = p2.querySelectorAll('.project-detail');
-                
-                if (p2Num) p2Num.textContent = t.project2Number;
-                if (p2Title) p2Title.textContent = t.project2Title;
-                if (p2Desc) p2Desc.textContent = t.project2Desc;
-                if (p2Features[0]) p2Features[0].textContent = t.project2Feature1;
-                if (p2Features[1]) p2Features[1].textContent = t.project2Feature2;
-                if (p2Features[2]) p2Features[2].textContent = t.project2Feature3;
-                if (p2Features[3]) p2Features[3].textContent = t.project2Feature4;
-                if (p2Labels[0]) p2Labels[0].textContent = t.project1MetaLabel;
-                if (p2Details[0]) p2Details[0].textContent = t.project1MetaDetail;
-            }
-            
-            // PROJECT 3 - Product Innovation
-            if (projects[2]) {
-                const p3 = projects[2];
-                const p3Num = p3.querySelector('.project-number');
-                const p3Title = p3.querySelector('.project-title');
-                const p3Desc = p3.querySelector('.project-description');
-                const p3Labels = p3.querySelectorAll('.project-label');
-                const p3Names = p3.querySelectorAll('.project-name');
-                const p3Details = p3.querySelectorAll('.project-detail');
-                const p3Badge = p3.querySelector('.resona-badge');
-                const p3ComingSoon = p3.querySelectorAll('.project-meta')[2]?.querySelectorAll('li');
-                
-                if (p3Num) p3Num.textContent = t.project3Number;
-                if (p3Title) p3Title.textContent = t.project3Title;
-                if (p3Desc) p3Desc.textContent = t.project3Desc;
-                if (p3Labels[0]) p3Labels[0].textContent = t.project3FocusLabel;
-                if (p3Names[0]) p3Names[0].textContent = t.project3FocusName;
-                if (p3Details[0]) p3Details[0].textContent = t.project3FocusDetail;
-                if (p3Badge) p3Badge.textContent = t.project3ResonaBadge;
-                if (p3Names[1]) p3Names[1].textContent = t.project3ResonaName;
-                if (p3Details[1]) p3Details[1].textContent = t.project3ResonaDetail;
-                if (p3Labels[1]) p3Labels[1].textContent = t.project3ComingSoonLabel;
-                if (p3ComingSoon) {
-                    if (p3ComingSoon[0]) p3ComingSoon[0].textContent = t.project3ComingSoon1;
-                    if (p3ComingSoon[1]) p3ComingSoon[1].textContent = t.project3ComingSoon2;
-                    if (p3ComingSoon[2]) p3ComingSoon[2].textContent = t.project3ComingSoon3;
-                }
-            }
-            
-            // How It Works
-            const steps = document.querySelectorAll('.step');
-            if (steps[0]) {
-                const s1Title = steps[0].querySelector('.step-title');
-                const s1Duration = steps[0].querySelector('.step-duration');
-                const s1Desc = steps[0].querySelector('.step-description');
-                if (s1Title) s1Title.textContent = t.step1Title;
-                if (s1Duration) s1Duration.textContent = t.step1Duration;
-                if (s1Desc) s1Desc.textContent = t.step1Desc;
-            }
-            if (steps[1]) {
-                const s2Title = steps[1].querySelector('.step-title');
-                const s2Duration = steps[1].querySelector('.step-duration');
-                const s2Desc = steps[1].querySelector('.step-description');
-                if (s2Title) s2Title.textContent = t.step2Title;
-                if (s2Duration) s2Duration.textContent = t.step2Duration;
-                if (s2Desc) s2Desc.textContent = t.step2Desc;
-            }
-            if (steps[2]) {
-                const s3Title = steps[2].querySelector('.step-title');
-                const s3Desc = steps[2].querySelector('.step-description');
-                if (s3Title) s3Title.textContent = t.step3Title;
-                if (s3Desc) s3Desc.textContent = t.step3Desc;
-            }
-            
-            // Who It's For
-            safeUpdate('.who-intro', t.whoIntro);
-            safeUpdate('.who-list-title', t.whoListTitle);
-            const whoItems = document.querySelectorAll('.who-list li');
-            if (whoItems[0]) whoItems[0].textContent = t.whoItem1;
-            if (whoItems[1]) whoItems[1].textContent = t.whoItem2;
-            if (whoItems[2]) whoItems[2].textContent = t.whoItem3;
-            if (whoItems[3]) whoItems[3].textContent = t.whoItem4;
-            
-            // Insights
-            const insightsP = document.querySelector('.insights-section p');
-            const insightsA = document.querySelector('.insights-section a');
-            if (insightsP) insightsP.textContent = t.insightsDesc;
-            if (insightsA) insightsA.textContent = t.insightsButton;
-            
-            // Final CTA
-            safeUpdate('.cta-title', t.ctaTitle);
-            safeUpdate('.cta-subtitle', t.ctaSubtitle);
-            const altContact = document.querySelector('.alternative-contact');
-            if (altContact) {
-                altContact.innerHTML = t.altContact + ' <a href="mailto:issouf@konate-labs.com">issouf@konate-labs.com</a>';
-            }
+        if (lang !== currentLanguage) {
+          currentLanguage = lang;
+          currentLangSpan.textContent = lang.toUpperCase();
+          
+          options.forEach(opt => opt.classList.remove('active'));
+          option.classList.add('active');
+          
+          translatePage(lang);
         }
-    </script>
-</body>
-</html>
+        
+        toggle.classList.remove('active');
+      });
+    });
+    
+    function translatePage(lang) {
+      const t = translations[lang];
+      
+      // Helper function to safely update text
+      function safeUpdate(selector, text, isHTML = false) {
+        const el = document.querySelector(selector);
+        if (el) {
+          if (isHTML) {
+            el.innerHTML = text;
+          } else {
+            el.textContent = text;
+          }
+        }
+      }
+      
+      function safeUpdateAll(selector, textArray, isHTML = false) {
+        const elements = document.querySelectorAll(selector);
+        textArray.forEach((text, index) => {
+          if (elements[index]) {
+            if (isHTML) {
+              elements[index].innerHTML = text;
+            } else {
+              elements[index].textContent = text;
+            }
+          }
+        });
+      }
+      
+      // Nav
+      safeUpdate('#tagline', t.tagline);
+      
+      // Hero
+      safeUpdate('.hero h1', t.heroTitle);
+      safeUpdate('.hero-subheadline', t.heroSubtitle, true);
+      document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
+        btn.textContent = t.ctaButton;
+      });
+      
+      // What We Build Section
+      safeUpdateAll('.section-label', [t.ourWorkLabel, t.processLabel, t.idealClientLabel, t.insightsLabel, t.getStartedLabel]);
+      safeUpdateAll('.section-title', [t.whatWeBuildTitle, t.howItWorksTitle, t.whoItsForTitle, t.insightsTitle]);
+      
+      // PROJECT 1 - AI Operations
+      const projects = document.querySelectorAll('.project-card');
+      if (projects[0]) {
+        const p1 = projects[0];
+        const p1Num = p1.querySelector('.project-number');
+        const p1Title = p1.querySelector('.project-title');
+        const p1Desc = p1.querySelector('.project-description');
+        const p1Features = p1.querySelectorAll('.project-features li');
+        const p1Labels = p1.querySelectorAll('.project-label');
+        const p1Names = p1.querySelectorAll('.project-name');
+        const p1Details = p1.querySelectorAll('.project-detail');
+        
+        if (p1Num) p1Num.textContent = t.project1Number;
+        if (p1Title) p1Title.textContent = t.project1Title;
+        if (p1Desc) p1Desc.textContent = t.project1Desc;
+        if (p1Features[0]) p1Features[0].textContent = t.project1Feature1;
+        if (p1Features[1]) p1Features[1].textContent = t.project1Feature2;
+        if (p1Features[2]) p1Features[2].textContent = t.project1Feature3;
+        if (p1Labels[0]) p1Labels[0].textContent = t.project1BuildLabel;
+        if (p1Names[0]) p1Names[0].textContent = t.project1BuildName;
+        if (p1Details[0]) p1Details[0].textContent = t.project1BuildDetail;
+      }
+      
+      // PROJECT 2 - Analytics
+      if (projects[1]) {
+        const p2 = projects[1];
+        const p2Num = p2.querySelector('.project-number');
+        const p2Title = p2.querySelector('.project-title');
+        const p2Desc = p2.querySelector('.project-description');
+        const p2Features = p2.querySelectorAll('.project-features li');
+        const p2Labels = p2.querySelectorAll('.project-label');
+        const p2Details = p2.querySelectorAll('.project-detail');
+        
+        if (p2Num) p2Num.textContent = t.project2Number;
+        if (p2Title) p2Title.textContent = t.project2Title;
+        if (p2Desc) p2Desc.textContent = t.project2Desc;
+        if (p2Features[0]) p2Features[0].textContent = t.project2Feature1;
+        if (p2Features[1]) p2Features[1].textContent = t.project2Feature2;
+        if (p2Features[2]) p2Features[2].textContent = t.project2Feature3;
+        if (p2Features[3]) p2Features[3].textContent = t.project2Feature4;
+        if (p2Labels[0]) p2Labels[0].textContent = t.project1MetaLabel;
+        if (p2Details[0]) p2Details[0].textContent = t.project1MetaDetail;
+      }
+      
+      // PROJECT 3 - Product Innovation
+      if (projects[2]) {
+        const p3 = projects[2];
+        const p3Num = p3.querySelector('.project-number');
+        const p3Title = p3.querySelector('.project-title');
+        const p3Desc = p3.querySelector('.project-description');
+        const p3Labels = p3.querySelectorAll('.project-label');
+        const p3Names = p3.querySelectorAll('.project-name');
+        const p3Details = p3.querySelectorAll('.project-detail');
+        const p3Badge = p3.querySelector('.resona-badge');
+        const p3ComingSoon = p3.querySelectorAll('.project-meta')[2]?.querySelectorAll('li');
+        
+        if (p3Num) p3Num.textContent = t.project3Number;
+        if (p3Title) p3Title.textContent = t.project3Title;
+        if (p3Desc) p3Desc.textContent = t.project3Desc;
+        if (p3Labels[0]) p3Labels[0].textContent = t.project3FocusLabel;
+        if (p3Names[0]) p3Names[0].textContent = t.project3FocusName;
+        if (p3Details[0]) p3Details[0].textContent = t.project3FocusDetail;
+        if (p3Badge) p3Badge.textContent = t.project3ResonaBadge;
+        if (p3Names[1]) p3Names[1].textContent = t.project3ResonaName;
+        if (p3Details[1]) p3Details[1].textContent = t.project3ResonaDetail;
+        if (p3Labels[1]) p3Labels[1].textContent = t.project3ComingSoonLabel;
+        if (p3ComingSoon) {
+          if (p3ComingSoon[0]) p3ComingSoon[0].textContent = t.project3ComingSoon1;
+          if (p3ComingSoon[1]) p3ComingSoon[1].textContent = t.project3ComingSoon2;
+          if (p3ComingSoon[2]) p3ComingSoon[2].textContent = t.project3ComingSoon3;
+        }
+      }
+      
+      // How It Works
+      const steps = document.querySelectorAll('.step');
+      if (steps[0]) {
+        const s1Title = steps[0].querySelector('.step-title');
+        const s1Duration = steps[0].querySelector('.step-duration');
+        const s1Desc = steps[0].querySelector('.step-description');
+        if (s1Title) s1Title.textContent = t.step1Title;
+        if (s1Duration) s1Duration.textContent = t.step1Duration;
+        if (s1Desc) s1Desc.textContent = t.step1Desc;
+      }
+      if (steps[1]) {
+        const s2Title = steps[1].querySelector('.step-title');
+        const s2Duration = steps[1].querySelector('.step-duration');
+        const s2Desc = steps[1].querySelector('.step-description');
+        if (s2Title) s2Title.textContent = t.step2Title;
+        if (s2Duration) s2Duration.textContent = t.step2Duration;
+        if (s2Desc) s2Desc.textContent = t.step2Desc;
+      }
+      if (steps[2]) {
+        const s3Title = steps[2].querySelector('.step-title');
+        const s3Desc = steps[2].querySelector('.step-description');
+        if (s3Title) s3Title.textContent = t.step3Title;
+        if (s3Desc) s3Desc.textContent = t.step3Desc;
+      }
+      
+      // Who It's For
+      safeUpdate('.who-intro', t.whoIntro);
+      safeUpdate('.who-list-title', t.whoListTitle);
+      const whoItems = document.querySelectorAll('.who-list li');
+      if (whoItems[0]) whoItems[0].textContent = t.whoItem1;
+      if (whoItems[1]) whoItems[1].textContent = t.whoItem2;
+      if (whoItems[2]) whoItems[2].textContent = t.whoItem3;
+      if (whoItems[3]) whoItems[3].textContent = t.whoItem4;
+      
+      // Insights
+      const insightsP = document.querySelector('.insights-section p');
+      const insightsA = document.querySelector('.insights-section a');
+      if (insightsP) insightsP.textContent = t.insightsDesc;
+      if (insightsA) insightsA.textContent = t.insightsButton;
+      
+      // Final CTA
+      safeUpdate('.cta-title', t.ctaTitle);
+      safeUpdate('.cta-subtitle', t.ctaSubti
