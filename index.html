@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konate Labs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --deep-navy: #0d1b2a;
+            --slate: #415a77;
+            --ice-blue: #778da9;
+            --soft-white: #fafafa;
+            --pure-white: #ffffff;
+            --accent: #e0e1dd;
+            --charcoal: #1b263b;
+            --cyan-glow: #06B6D4;
+            --warm-accent: #d4a574;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            color: var(--deep-navy);
+            background: var(--soft-white);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        /* Custom cursor effect */
+        body::after {
+            content: '';
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--cyan-glow);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        /* Smooth scroll reveal animations */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .animate-in {
+            animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+
+        /* Container System */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 clamp(24px, 5vw, 80px);
+        }
+
+        .container-narrow {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 clamp(24px, 5vw, 80px);
+        }
+
+        /* Navigation with personality */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 40px clamp(24px, 5vw, 80px);
+            background: rgba(250, 250, 250, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(13, 27, 42, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            color: var(--deep-navy);
+            text-transform: uppercase;
+        }
+
+        .nav-tagline {
+            font-size: 10px;
+            color: var(--slate);
+            letter-spacing: 0.1em;
+            font-style: italic;
+        }
+
+        /* Language Toggle */
+        .language-toggle {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px 16px;
+            border: 1px solid rgba(13, 27, 42, 0.1);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            background: var(--pure-white);
+        }
+
+        .language-toggle:hover {
+            border-color: var(--cyan-glow);
+            background: rgba(6, 182, 212, 0.02);
+        }
+
+        .language-toggle svg {
+            width: 16px;
+            height: 16px;
+            opacity: 0.6;
+        }
+
+        .language-toggle span {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--deep-navy);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: var(--pure-white);
+            border: 1px solid rgba(13, 27, 42, 0.1);
+            border-radius: 4px;
+            box-shadow: 0 10px 40px rgba(13, 27, 42, 0.1);
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            min-width: 140px;
+        }
+
+        .language-toggle.active .language-dropdown {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0);
+        }
+
+        .language-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            font-size: 13px;
+            color: var(--deep-navy);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .language-option:hover {
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        .language-option.active {
+            background: rgba(6, 182, 212, 0.1);
+            font-weight: 600;
+        }
+
+        /* HERO SECTION with floating elements */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 120px;
+            padding-bottom: 120px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            right: 10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '{ }';
+            position: absolute;
+            bottom: 15%;
+            left: 5%;
+            font-size: 120px;
+            color: rgba(13, 27, 42, 0.02);
+            font-family: 'Courier New', monospace;
+            pointer-events: none;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .hero-content {
+            max-width: 1100px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 8vw, 112px);
+            color: var(--deep-navy);
+            margin-bottom: 40px;
+            line-height: 1.1;
+            position: relative;
+        }
+
+        .hero h1::first-letter {
+            color: var(--cyan-glow);
+        }
+
+        .hero-subheadline {
+            font-size: clamp(18px, 2.5vw, 28px);
+            font-weight: 300;
+            color: var(--slate);
+            max-width: 700px;
+            margin-bottom: 60px;
+            line-height: 1.6;
+        }
+
+        .hero-subheadline strong {
+            color: var(--deep-navy);
+            font-weight: 500;
+            position: relative;
+        }
+
+        .hero-subheadline strong::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cyan-glow), transparent);
+            opacity: 0.3;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 20px 50px;
+            background: var(--deep-navy);
+            color: var(--pure-white);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--charcoal);
+            transition: left 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: -1;
+        }
+
+        .btn-primary:hover::before {
+            left: 0;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.2);
+        }
+
+        /* Section Spacing */
+        section {
+            padding: clamp(80px, 12vw, 180px) 0;
+            position: relative;
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ice-blue);
+            margin-bottom: 24px;
+            display: block;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .section-label::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 1px;
+            background: var(--cyan-glow);
+        }
+
+        .section-title {
+            font-size: clamp(40px, 6vw, 72px);
+            color: var(--deep-navy);
+            margin-bottom: 80px;
+            max-width: 900px;
+        }
+
+        /* WHAT WE BUILD with personality */
+        .what-we-build {
+            background: var(--pure-white);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 0;
+        }
+
+        .project-card {
+            padding: clamp(40px, 6vw, 80px);
+            border: 1px solid rgba(13, 27, 42, 0.08);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            background: var(--soft-white);
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--cyan-glow), var(--warm-accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .project-card:hover {
+            background: var(--pure-white);
+            transform: translateY(-8px);
+            box-shadow: 0 40px 80px rgba(13, 27, 42, 0.12);
+            z-index: 10;
+        }
+
+        .project-number {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            color: var(--cyan-glow);
+            margin-bottom: 32px;
+            display: block;
+            position: relative;
+        }
+
+        .project-title {
+            font-size: clamp(28px, 3vw, 42px);
+            color: var(--deep-navy);
+            margin-bottom: 24px;
+        }
+
+        .project-description {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--slate);
+            margin-bottom: 32px;
+        }
+
+        .project-features {
+            list-style: none;
+            margin-bottom: 40px;
+        }
+
+        .project-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(13, 27, 42, 0.06);
+            font-size: 15px;
+            color: var(--deep-navy);
+            font-weight: 400;
+            position: relative;
+            padding-left: 24px;
+            transition: padding-left 0.3s ease;
+        }
+
+        .project-features li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--cyan-glow);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover .project-features li::before {
+            opacity: 1;
+        }
+
+        .project-meta {
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(13, 27, 42, 0.08);
+        }
+
+        .project-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--ice-blue);
+            margin-bottom: 12px;
+        }
+
+        .project-name {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--deep-navy);
+            margin-bottom: 8px;
+        }
+
+        .project-detail {
+            font-size: 14px;
+            color: var(--slate);
+            line-height: 1.7;
+        }
+
+        .project-image {
+            width: 100%;
+            aspect-ratio: 16/10;
+            background: linear-gradient(135deg, #e8e8e8 0%, #d4d4d4 100%);
+            margin-top: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ice-blue);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.6s ease;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(0.98);
+        }
+
+        .project-image::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Special styling for RESONA */
+        .resona-card {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.03) 0%, var(--soft-white) 100%);
+        }
+
+        .resona-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: var(--cyan-glow);
+            color: var(--pure-white);
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            border-radius: 2px;
+        }
+
+        /* HOW IT WORKS with personality */
+        .how-it-works {
+            background: var(--deep-navy);
+            color: var(--pure-white);
+            overflow: hidden;
+        }
+
+        .how-it-works::before {
+            content: 'PROCESS';
+            position: absolute;
+            top: 10%;
+            right: -5%;
+            font-size: 200px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.02);
+            font-family: 'Cormorant Garamond', serif;
+            transform: rotate(-10deg);
+            pointer-events: none;
+        }
+
+        .how-it-works .section-label {
+            color: var(--cyan-glow);
+        }
+
+        .how-it-works .section-title {
+            color: var(--pure-white);
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: clamp(40px, 6vw, 80px);
+            margin-top: 80px;
+        }
+
+        .step {
+            position: relative;
+        }
+
+        .step-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(80px, 10vw, 140px);
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.08);
+            line-height: 1;
+            margin-bottom: 24px;
+            transition: color 0.6s ease;
+        }
+
+        .step:hover .step-number {
+            color: rgba(6, 182, 212, 0.15);
+        }
+
+        .step-title {
+            font-size: clamp(24px, 3vw, 36px);
+            color: var(--pure-white);
+            margin-bottom: 16px;
+        }
+
+        .step-duration {
+            font-size: 13px;
+            color: var(--cyan-glow);
+            margin-bottom: 24px;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+
+        .step-description {
+            font-size: 16px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* WHO IT'S FOR with character */
+        .who-its-for {
+            background: var(--pure-white);
+        }
+
+        .who-its-for::before {
+            content: '?';
+            position: absolute;
+            top: 15%;
+            right: 8%;
+            font-size: 300px;
+            color: rgba(13, 27, 42, 0.02);
+            font-family: 'Cormorant Garamond', serif;
+            pointer-events: none;
+        }
+
+        .who-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .who-intro {
+            font-size: clamp(20px, 2.5vw, 28px);
+            line-height: 1.6;
+            color: var(--deep-navy);
+            margin-bottom: 60px;
+            font-weight: 300;
+        }
+
+        .who-list-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--deep-navy);
+            margin-bottom: 32px;
+        }
+
+        .who-list {
+            list-style: none;
+        }
+
+        .who-list li {
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(13, 27, 42, 0.08);
+            font-size: 17px;
+            color: var(--slate);
+            position: relative;
+            padding-left: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .who-list li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: var(--cyan-glow);
+            font-size: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .who-list li:hover {
+            color: var(--deep-navy);
+            padding-left: 50px;
+        }
+
+        .who-list li:hover::before {
+            transform: rotate(90deg);
+        }
+
+        /* FINAL CTA */
+        .final-cta {
+            background: var(--soft-white);
+            text-align: center;
+            position: relative;
+        }
+
+        .final-cta::before {
+            content: '{ LETS BUILD }';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(60px, 15vw, 180px);
+            color: rgba(13, 27, 42, 0.02);
+            font-family: 'Courier New', monospace;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: clamp(40px, 6vw, 72px);
+            color: var(--deep-navy);
+            margin-bottom: 32px;
+        }
+
+        .cta-subtitle {
+            font-size: 18px;
+            color: var(--slate);
+            margin-bottom: 48px;
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            padding: 20px 50px;
+            background: transparent;
+            color: var(--deep-navy);
+            border: 1px solid var(--deep-navy);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--deep-navy);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+            z-index: -1;
+        }
+
+        .btn-secondary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-secondary:hover {
+            color: var(--pure-white);
+            transform: translateY(-3px);
+            border-color: var(--deep-navy);
+        }
+
+        .alternative-contact {
+            font-size: 15px;
+            color: var(--slate);
+        }
+
+        .alternative-contact a {
+            color: var(--deep-navy);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .alternative-contact a:hover {
+            border-bottom-color: var(--cyan-glow);
+            color: var(--cyan-glow);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--deep-navy);
+            color: var(--pure-white);
+            padding: 80px clamp(24px, 5vw, 80px);
+            text-align: center;
+            position: relative;
+        }
+
+        footer::before {
+            content: '◆';
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--cyan-glow);
+            font-size: 12px;
+            opacity: 0.6;
+        }
+
+        .footer-logo {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            margin-top: 20px;
+            opacity: 0.9;
+        }
+
+        .footer-links {
+            margin-bottom: 32px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            margin: 0 24px;
+            font-size: 14px;
+            letter-spacing: 0.05em;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--cyan-glow);
+            transition: width 0.3s ease;
+        }
+
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+
+        .footer-links a:hover {
+            color: var(--pure-white);
+        }
+
+        .copyright {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.05em;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav {
+                padding: 20px 24px;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                gap: 16px;
+            }
+
+            nav > div:first-child {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            nav > div:first-child svg {
+                width: 28px;
+                height: 28px;
+            }
+
+            .nav-logo {
+                font-size: 13px;
+                letter-spacing: 0.15em;
+            }
+
+            .nav-tagline {
+                display: none;
+            }
+
+            nav > div:last-child {
+                display: flex;
+                align-items: center;
+            }
+
+            .language-toggle {
+                position: static;
+                padding: 6px 12px;
+            }
+
+            .language-toggle svg:first-child {
+                width: 14px;
+                height: 14px;
+            }
+
+            .language-toggle span {
+                font-size: 12px;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            .hero {
+                padding-top: 120px;
+            }
+
+            .hero::after {
+                font-size: 60px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps-container {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                padding: 16px 36px;
+                font-size: 13px;
+            }
+
+            .footer-links a {
+                display: block;
+                margin: 16px 0;
+            }
+
+            .who-its-for::before,
+            .how-it-works::before,
+            .final-cta::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                <path d="M18 3L30 9.5V26.5L18 33L6 26.5V9.5L18 3Z" stroke="#06B6D4" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M12 12V24M12 18L24 12M12 18L24 24" stroke="#0d1b2a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="nav-logo">Konate Labs</div>
+        </div>
+        
+        <div style="display: flex; align-items: center; gap: 32px;">
+            <div class="nav-tagline" id="tagline">Senior PM + Operator. 10 Years in Healthcare &amp; SaaS.</div>
+            
+            <!-- Language Toggle -->
+            <div class="language-toggle" id="languageToggle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke-width="2"/>
+                </svg>
+                <span id="currentLang">EN</span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                    <path d="M6 8L2 4h8L6 8z"/>
+                </svg>
+                
+                <div class="language-dropdown" id="languageDropdown">
+                    <div class="language-option active" data-lang="en">🇺🇸 English</div>
+                    <div class="language-option" data-lang="es">🇪🇸 Español</div>
+                    <div class="language-option" data-lang="fr">🇫🇷 Français</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="animate-in delay-1">Your team already knows what's slowing them down. I build the systems that fix it.</h1>
+                <p class="hero-subheadline animate-in delay-2">I am a Senior PM and operator with 10 years in healthcare and SaaS. I come into your business, map your workflows, and build the tools your team needs to produce more with less friction. <strong>No AI hype. Just working systems.</strong></p>
+                <a href="https://cal.com/soufi-01yeoz/30min" target="_blank" rel="noopener noreferrer" class="btn-primary animate-in delay-3">Book a Free Workflow Audit</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROOF STRIP -->
+    <div style="background: var(--deep-navy); padding: 28px clamp(24px, 5vw, 80px); display: flex; align-items: center; gap: clamp(24px, 5vw, 64px); overflow-x: auto; flex-wrap: wrap;">
+        <span style="font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ice-blue); white-space: nowrap; flex-shrink: 0;">Experience &amp; Deployed Work</span>
+        <div style="width: 1px; height: 24px; background: rgba(255,255,255,0.15); flex-shrink: 0;"></div>
+        <span style="font-size: 14px; color: rgba(255,255,255,0.75); font-weight: 400; white-space: nowrap; flex-shrink: 0;">Byte Dental</span>
+        <span style="font-size: 14px; color: rgba(255,255,255,0.75); font-weight: 400; white-space: nowrap; flex-shrink: 0;">Envolve PeopleCare</span>
+        <span style="font-size: 14px; color: rgba(255,255,255,0.75); font-weight: 400; white-space: nowrap; flex-shrink: 0;">LabTrack AI</span>
+        <span style="font-size: 14px; color: rgba(255,255,255,0.75); font-weight: 400; white-space: nowrap; flex-shrink: 0;">UMOA Bond Dashboard</span>
+        <span style="font-size: 14px; color: rgba(255,255,255,0.75); font-weight: 400; white-space: nowrap; flex-shrink: 0;">EN / ES / FR</span>
+    </div>
+
+    <!-- SERVICES -->
+    <section class="what-we-build">
+        <div class="container">
+            <span class="section-label">Services</span>
+            <h2 class="section-title">What I Do For Your Practice</h2>
+            
+            <div class="projects-grid">
+                <div class="project-card">
+                    <span class="project-number">01</span>
+                    <h3 class="project-title">Workflow Audit</h3>
+                    <p class="project-description">I come into your practice, spend 30 minutes understanding how your team actually operates, and tell you honestly where time is being lost and what can be done about it.</p>
+                    <ul class="project-features">
+                        <li>Map your highest-friction workflows end to end</li>
+                        <li>Identify where manual work can be eliminated</li>
+                        <li>Deliver a clear picture of what to fix and in what order</li>
+                        <li>No cost, no obligation, no pitch</li>
+                    </ul>
+                    <div class="project-meta">
+                        <div class="project-label">Common Areas</div>
+                        <div class="project-name">Insurance Verification / Prior Auth / Patient Intake / Scheduling</div>
+                        <p class="project-detail">These are the four areas where DMV practices consistently lose the most front desk hours every week. If any of these sound familiar, the audit will be worth your time.</p>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <span class="project-number">02</span>
+                    <h3 class="project-title">Operations Build</h3>
+                    <p class="project-description">A custom solution built around how your practice already works. Not a SaaS subscription. A working system delivered and running in 2 to 3 weeks.</p>
+                    <ul class="project-features">
+                        <li>Custom-built to your specific workflows, not generic templates</li>
+                        <li>Integrates into tools your team already uses</li>
+                        <li>No new platform for staff to learn from scratch</li>
+                        <li>I build it, deliver it, and make sure it runs</li>
+                    </ul>
+                    <div class="project-meta">
+                        <div class="project-label">Recent Build</div>
+                        <div class="project-name">LabTrack AI for SAFER Agrobiologicos</div>
+                        <p class="project-detail">Laboratory sample tracking system with automated workflows and real-time status tracking. Built and deployed in under 3 weeks.</p>
+                    </div>
+                    <div class="project-meta" style="margin-top: 24px; padding-top: 24px;">
+                        <div class="project-label">Also Built</div>
+                        <div class="project-name">UMOA Bond Dashboard</div>
+                        <p class="project-detail">Full-stack government securities platform covering 786 bonds across 8 West African countries. React frontend, Flask backend, PostgreSQL.</p>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <span class="project-number">03</span>
+                    <h3 class="project-title">Ongoing Operations Support</h3>
+                    <p class="project-description">A monthly engagement to iterate on what was built, add new capabilities, and make sure everything keeps running well as your practice grows.</p>
+                    <ul class="project-features">
+                        <li>Monthly review of what is working and what needs adjustment</li>
+                        <li>New workflow improvements as operations evolve</li>
+                        <li>Priority response when something needs attention</li>
+                        <li>Strategic ops conversations to find the next highest-leverage fix</li>
+                    </ul>
+                    <div class="project-meta">
+                        <div class="project-label">Who This Is For</div>
+                        <div class="project-name">Healthcare Practices / E-Commerce Operations / Professional Services</div>
+                        <p class="project-detail">Teams that understand operational efficiency is not a one-time project. It compounds over time when someone is actively tending it.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works">
+        <div class="container">
+            <span class="section-label">Process</span>
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Free Workflow Audit</h3>
+                    <p class="step-duration">30 minutes</p>
+                    <p class="step-description">We map your current operations together. I look at where your team is losing time, ask the right questions, and give you an honest read on what can be fixed and how.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">I Build the Solution</h3>
+                    <p class="step-duration">2 to 3 weeks</p>
+                    <p class="step-description">No handoffs. No middlemen. I scope it, build it, and integrate it into how your team already works. You get something running, not a recommendation deck.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Your Team Runs Faster</h3>
+                    <p class="step-description">Less time on manual work. More time on patients, clients, and the things that actually grow the business. The same team, producing more.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHO IT'S FOR -->
+    <section class="who-its-for">
+        <div class="container">
+            <div class="who-content">
+                <span class="section-label">Who This Is For</span>
+                <h2 class="section-title">Built for operators, not experimenters</h2>
+                <p class="who-intro">Medical practices, e-commerce operations teams, and professional services firms in the DMV and beyond. If your team is good at their jobs but drowning in manual work, that is exactly the problem I solve.</p>
+                <p class="who-list-title">You are a strong fit if:</p>
+                <ul class="who-list">
+                    <li>Insurance verification, intake, or scheduling is eating your front desk hours every day</li>
+                    <li>Your team is doing repetitive work that feels like it should not require a human</li>
+                    <li>You have looked at tools and software but nothing fits how you actually operate</li>
+                    <li>You want something built for your practice, not a generic platform you have to adapt to</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- INSIGHTS -->
+    <section class="insights-section" style="background: var(--pure-white); padding: clamp(60px, 10vw, 120px) 0;">
+        <div class="container">
+            <div class="who-content">
+                <span class="section-label">Insights</span>
+                <h2 class="section-title" style="margin-bottom: 40px;">Passport to Process</h2>
+                <p style="font-size: clamp(18px, 2vw, 22px); line-height: 1.7; color: var(--slate); margin-bottom: 40px; font-weight: 300;">
+                    Stories from 65+ countries about building systems, operations, and the people who keep things running.
+                </p>
+                <a href="#" style="display: inline-block; padding: 16px 40px; background: transparent; color: var(--deep-navy); border: 1px solid rgba(13, 27, 42, 0.2); text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.4s ease;">
+                    Read The Blog →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="final-cta">
+        <div class="container">
+            <div class="cta-content">
+                <span class="section-label">Get Started</span>
+                <h2 class="cta-title">Book a free 30-minute workflow audit</h2>
+                <p class="cta-subtitle">No pitch. No cost. Just 30 minutes to look at your operations honestly and tell you what I see. If I can help, I will tell you exactly what that looks like. If I cannot, I will tell you that too.</p>
+                <a href="https://cal.com/soufi-01yeoz/30min" target="_blank" rel="noopener noreferrer" class="btn-secondary">Book Your Free Audit</a>
+                <p class="alternative-contact">or email: <a href="mailto:issouf@konate-labs.com">issouf@konate-labs.com</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">Konate Labs</div>
+        <div class="footer-links">
+            <a href="https://www.linkedin.com/in/issouf-konate-41115531/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="mailto:issouf@konate-labs.com">Email</a>
+        </div>
+        <div class="copyright">© 2026 Konate Labs</div>
+    </footer>
+
+    <script>
+        // Trilingual Language Toggle (EN/ES/FR)
+        const toggle = document.getElementById('languageToggle');
+        const currentLangSpan = document.getElementById('currentLang');
+        const options = document.querySelectorAll('.language-option');
+        
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggle.classList.toggle('active');
+        });
+        
+        document.addEventListener('click', () => {
+            toggle.classList.remove('active');
+        });
+        
+        let currentLanguage = 'en';
+        
+        const translations = {
+            en: {
+                tagline: "Senior PM + Operator. 10 Years in Healthcare & SaaS.",
+                heroTitle: "Your team already knows what's slowing them down. I build the systems that fix it.",
+                heroSubtitle: "I am a Senior PM and operator with 10 years in healthcare and SaaS. I come into your business, map your workflows, and build the tools your team needs to produce more with less friction. <strong>No AI hype. Just working systems.</strong>",
+                ctaButton: "Book a Free Workflow Audit",
+                ourWorkLabel: "Services",
+                whatWeBuildTitle: "What I Do For Your Practice",
+                project1Number: "01",
+                project1Title: "Workflow Audit",
+                project1Desc: "I come into your practice, spend 30 minutes understanding how your team actually operates, and tell you honestly where time is being lost and what can be done about it.",
+                project1Feature1: "Map your highest-friction workflows end to end",
+                project1Feature2: "Identify where manual work can be eliminated",
+                project1Feature3: "Deliver a clear picture of what to fix and in what order",
+                project1Feature4: "No cost, no obligation, no pitch",
+                project1MetaLabel: "Common Areas",
+                project1MetaDetail: "Insurance verification, prior auth, patient intake, and scheduling are where DMV practices consistently lose the most front desk hours every week.",
+                project1BuildLabel: "Entry Point",
+                project1BuildName: "Free 30-Minute Audit",
+                project1BuildDetail: "No cost, no obligation. I look at how your operations actually run and give you an honest picture of where time is being lost.",
+                project2Number: "02",
+                project2Title: "Operations Build",
+                project2Desc: "A custom solution built around how your practice already works. Not a SaaS subscription. A working system delivered and running in 2 to 3 weeks.",
+                project2Feature1: "Custom-built to your specific workflows, not generic templates",
+                project2Feature2: "Integrates into tools your team already uses",
+                project2Feature3: "No new platform for staff to learn from scratch",
+                project2Feature4: "I build it, deliver it, and make sure it runs",
+                project3Number: "03",
+                project3Title: "Ongoing Operations Support",
+                project3Desc: "A monthly engagement to iterate on what was built, add new capabilities, and make sure everything keeps running well as your practice grows.",
+                project3FocusLabel: "Who This Is For",
+                project3FocusName: "Healthcare Practices / E-Commerce Operations / Professional Services",
+                project3FocusDetail: "Teams that understand operational efficiency is not a one-time project. It compounds over time when someone is actively tending it.",
+                project3ResonaBadge: "Recent Build",
+                project3ResonaName: "LabTrack AI for SAFER Agrobiologicos",
+                project3ResonaDetail: "Laboratory sample tracking system with automated workflows and real-time status tracking. Built and deployed in under 3 weeks.",
+                project3ComingSoonLabel: "Also Built",
+                project3ComingSoon1: "UMOA Bond Dashboard for West Africa Securities",
+                project3ComingSoon2: "Workflow automation systems at Envolve PeopleCare",
+                project3ComingSoon3: "AI product tools at Byte Dental",
+                processLabel: "Process",
+                howItWorksTitle: "How It Works",
+                step1Title: "Free Workflow Audit",
+                step1Duration: "30 minutes",
+                step1Desc: "We map your current operations together. I look at where your team is losing time, ask the right questions, and give you an honest read on what can be fixed and how.",
+                step2Title: "I Build the Solution",
+                step2Duration: "2 to 3 weeks",
+                step2Desc: "No handoffs. No middlemen. I scope it, build it, and integrate it into how your team already works. You get something running, not a recommendation deck.",
+                step3Title: "Your Team Runs Faster",
+                step3Desc: "Less time on manual work. More time on patients, clients, and the things that actually grow the business. The same team, producing more.",
+                idealClientLabel: "Who This Is For",
+                whoItsForTitle: "Built for operators, not experimenters",
+                whoIntro: "Medical practices, e-commerce operations teams, and professional services firms in the DMV and beyond. If your team is good at their jobs but drowning in manual work, that is exactly the problem I solve.",
+                whoListTitle: "You are a strong fit if:",
+                whoItem1: "Insurance verification, intake, or scheduling is eating your front desk hours every day",
+                whoItem2: "Your team is doing repetitive work that feels like it should not require a human",
+                whoItem3: "You have looked at tools and software but nothing fits how you actually operate",
+                whoItem4: "You want something built for your practice, not a generic platform you have to adapt to",
+                insightsLabel: "Insights",
+                insightsTitle: "Passport to Process",
+                insightsDesc: "Stories from 65+ countries about building systems, operations, and the people who keep things running.",
+                insightsButton: "Read The Blog →",
+                getStartedLabel: "Get Started",
+                ctaTitle: "Book a free 30-minute workflow audit",
+                ctaSubtitle: "No pitch. No cost. Just 30 minutes to look at your operations honestly and tell you what I see.",
+                altContact: "or email:"
+            },
+            es: {
+                tagline: "PM Senior + Operador. 10 Anos en Salud y SaaS.",
+                heroTitle: "Tu equipo ya sabe que lo esta frenando. Yo construyo los sistemas que lo arreglan.",
+                heroSubtitle: "Soy un PM Senior con 10 anos de experiencia en operaciones de salud y SaaS. Entro a tu negocio, mapeo tus flujos de trabajo y construyo las herramientas que tu equipo necesita para producir mas con menos friccion. <strong>Sin hype de IA. Solo sistemas que funcionan.</strong>",
+                ctaButton: "Reservar Auditoria Gratuita",
+                ourWorkLabel: "Servicios",
+                whatWeBuildTitle: "Lo Que Hago Para Tu Practica",
+                project1Number: "01",
+                project1Title: "Auditoria de Flujos de Trabajo",
+                project1Desc: "Entro a tu practica, paso 30 minutos entendiendo como opera realmente tu equipo, y te digo honestamente donde se pierde el tiempo y que se puede hacer al respecto.",
+                project1Feature1: "Mapeo de tus flujos de mayor friccion de principio a fin",
+                project1Feature2: "Identificar donde se puede eliminar el trabajo manual",
+                project1Feature3: "Entregar un panorama claro de que arreglar y en que orden",
+                project1Feature4: "Sin costo, sin obligacion, sin discurso de ventas",
+                project1MetaLabel: "Areas Comunes",
+                project1MetaDetail: "Verificacion de seguro, autorizacion previa, admision de pacientes y programacion son donde las practicas del DMV pierden mas horas de recepcion cada semana.",
+                project1BuildLabel: "Punto de Entrada",
+                project1BuildName: "Auditoria Gratuita de 30 Minutos",
+                project1BuildDetail: "Sin costo, sin obligacion. Analizo como operan realmente tus operaciones y te doy un panorama honesto de donde se pierde el tiempo.",
+                project2Number: "02",
+                project2Title: "Construccion de Operaciones",
+                project2Desc: "Una solucion personalizada construida alrededor de como ya trabaja tu practica. No una suscripcion SaaS. Un sistema funcional entregado y funcionando en 2 a 3 semanas.",
+                project2Feature1: "Construido a medida para tus flujos especificos, no plantillas genericas",
+                project2Feature2: "Se integra en las herramientas que tu equipo ya usa",
+                project2Feature3: "Sin nueva plataforma que el personal deba aprender desde cero",
+                project2Feature4: "Yo lo construyo, lo entrego y me aseguro de que funcione",
+                project3Number: "03",
+                project3Title: "Soporte Operativo Continuo",
+                project3Desc: "Un compromiso mensual para iterar lo construido, agregar nuevas capacidades y asegurarse de que todo siga funcionando bien a medida que tu practica crece.",
+                project3FocusLabel: "Para Quien Es",
+                project3FocusName: "Practicas de Salud / Operaciones E-Commerce / Servicios Profesionales",
+                project3FocusDetail: "Equipos que entienden que la eficiencia operativa no es un proyecto de una sola vez. Se acumula con el tiempo cuando alguien la cuida activamente.",
+                project3ResonaBadge: "Construccion Reciente",
+                project3ResonaName: "LabTrack AI para SAFER Agrobiologicos",
+                project3ResonaDetail: "Sistema de seguimiento de muestras de laboratorio con flujos de trabajo automatizados y rastreo en tiempo real. Construido y desplegado en menos de 3 semanas.",
+                project3ComingSoonLabel: "Tambien Construido",
+                project3ComingSoon1: "Panel de Bonos UMOA para Valores de Africa Occidental",
+                project3ComingSoon2: "Sistemas de automatizacion de flujos en Envolve PeopleCare",
+                project3ComingSoon3: "Herramientas de producto con IA en Byte Dental",
+                processLabel: "Proceso",
+                howItWorksTitle: "Como Funciona",
+                step1Title: "Auditoria Gratuita de Flujos",
+                step1Duration: "30 minutos",
+                step1Desc: "Mapeamos juntos tus operaciones actuales. Analizo donde tu equipo pierde tiempo, hago las preguntas correctas y te doy una lectura honesta de lo que se puede arreglar y como.",
+                step2Title: "Yo Construyo la Solucion",
+                step2Duration: "2 a 3 semanas",
+                step2Desc: "Sin intermediarios. Yo lo defino, lo construyo y lo integro en como ya trabaja tu equipo. Obtienes algo funcionando, no un informe de recomendaciones.",
+                step3Title: "Tu Equipo Opera Mas Rapido",
+                step3Desc: "Menos tiempo en trabajo manual. Mas tiempo con pacientes, clientes y lo que realmente hace crecer el negocio. El mismo equipo, produciendo mas.",
+                idealClientLabel: "Para Quien Es",
+                whoItsForTitle: "Construido para operadores, no experimentadores",
+                whoIntro: "Practicas medicas, equipos de operaciones de e-commerce y firmas de servicios profesionales en el DMV y mas alla. Si tu equipo es bueno en su trabajo pero se ahoga en trabajo manual, ese es exactamente el problema que resuelvo.",
+                whoListTitle: "Eres una buena opcion si:",
+                whoItem1: "La verificacion de seguros, admision o programacion consume las horas de recepcion cada dia",
+                whoItem2: "Tu equipo hace trabajo repetitivo que siente que no deberia requerir un humano",
+                whoItem3: "Has buscado herramientas y software pero nada se adapta a como realmente operas",
+                whoItem4: "Quieres algo construido para tu practica, no una plataforma generica a la que adaptarte",
+                insightsLabel: "Perspectivas",
+                insightsTitle: "Pasaporte al Proceso",
+                insightsDesc: "Historias de 65+ paises sobre construccion de sistemas, operaciones y las personas que mantienen todo en marcha.",
+                insightsButton: "Leer el Blog →",
+                getStartedLabel: "Comenzar",
+                ctaTitle: "Reserva una auditoria gratuita de 30 minutos",
+                ctaSubtitle: "Sin discurso de ventas. Sin costo. Solo 30 minutos para analizar tus operaciones honestamente y decirte lo que veo.",
+                altContact: "o email:"
+            },
+            fr: {
+                tagline: "PM Senior + Operateur. 10 Ans en Sante et SaaS.",
+                heroTitle: "Votre equipe sait deja ce qui la freine. Je construis les systemes qui y remedient.",
+                heroSubtitle: "Je suis un PM Senior avec 10 ans d'experience en operations de sante et SaaS. J'entre dans votre entreprise, je cartographie vos flux de travail et je construis les outils dont votre equipe a besoin pour produire plus avec moins de friction. <strong>Pas de battage sur l'IA. Juste des systemes qui fonctionnent.</strong>",
+                ctaButton: "Reserver un Audit Gratuit",
+                ourWorkLabel: "Services",
+                whatWeBuildTitle: "Ce Que Je Fais Pour Votre Pratique",
+                project1Number: "01",
+                project1Title: "Audit des Flux de Travail",
+                project1Desc: "J'entre dans votre pratique, je passe 30 minutes a comprendre comment votre equipe opere reellement, et je vous dis honnetement ou le temps est perdu et ce qui peut etre fait.",
+                project1Feature1: "Cartographier vos flux a friction elevee de bout en bout",
+                project1Feature2: "Identifier ou le travail manuel peut etre elimine",
+                project1Feature3: "Livrer une image claire de ce qu'il faut corriger et dans quel ordre",
+                project1Feature4: "Sans frais, sans obligation, sans discours de vente",
+                project1MetaLabel: "Domaines Communs",
+                project1MetaDetail: "Verification d'assurance, autorisation prealable, admission des patients et planification sont les domaines ou les pratiques du DMV perdent le plus d'heures de reception chaque semaine.",
+                project1BuildLabel: "Point d'Entree",
+                project1BuildName: "Audit Gratuit de 30 Minutes",
+                project1BuildDetail: "Sans frais, sans obligation. J'examine comment vos operations fonctionnent reellement et je vous donne une image honnete de la ou le temps est perdu.",
+                project2Number: "02",
+                project2Title: "Construction Operationnelle",
+                project2Desc: "Une solution personnalisee construite autour de la facon dont votre pratique fonctionne deja. Pas un abonnement SaaS. Un systeme operationnel livre et fonctionnel en 2 a 3 semaines.",
+                project2Feature1: "Construit sur mesure pour vos flux specifiques, pas des modeles generiques",
+                project2Feature2: "S'integre dans les outils que votre equipe utilise deja",
+                project2Feature3: "Pas de nouvelle plateforme a apprendre de zero pour le personnel",
+                project2Feature4: "Je le construis, le livre et m'assure qu'il fonctionne",
+                project3Number: "03",
+                project3Title: "Support Operationnel Continu",
+                project3Desc: "Un engagement mensuel pour iterer sur ce qui a ete construit, ajouter de nouvelles capacites et s'assurer que tout continue de bien fonctionner a mesure que votre pratique grandit.",
+                project3FocusLabel: "Pour Qui",
+                project3FocusName: "Cabinets de Sante / Operations E-Commerce / Services Professionnels",
+                project3FocusDetail: "Des equipes qui comprennent que l'efficacite operationnelle n'est pas un projet ponctuel. Elle se compose dans le temps quand quelqu'un s'en occupe activement.",
+                project3ResonaBadge: "Construction Recente",
+                project3ResonaName: "LabTrack AI pour SAFER Agrobiologicos",
+                project3ResonaDetail: "Systeme de suivi d'echantillons de laboratoire avec flux de travail automatises et suivi en temps reel. Construit et deploye en moins de 3 semaines.",
+                project3ComingSoonLabel: "Aussi Construit",
+                project3ComingSoon1: "Tableau de bord des obligations UMOA pour les valeurs mobilières d'Afrique de l'Ouest",
+                project3ComingSoon2: "Systemes d'automatisation des flux chez Envolve PeopleCare",
+                project3ComingSoon3: "Outils produit IA chez Byte Dental",
+                processLabel: "Processus",
+                howItWorksTitle: "Comment Ca Marche",
+                step1Title: "Audit Gratuit des Flux",
+                step1Duration: "30 minutes",
+                step1Desc: "Nous cartographions ensemble vos operations actuelles. J'examine ou votre equipe perd du temps, pose les bonnes questions et vous donne une lecture honnete de ce qui peut etre corrige et comment.",
+                step2Title: "Je Construis la Solution",
+                step2Duration: "2 a 3 semaines",
+                step2Desc: "Pas d'intermediaires. Je le definis, le construis et l'integre dans la facon dont votre equipe travaille deja. Vous obtenez quelque chose de fonctionnel, pas un rapport de recommandations.",
+                step3Title: "Votre Equipe Va Plus Vite",
+                step3Desc: "Moins de temps sur le travail manuel. Plus de temps pour les patients, les clients et ce qui fait vraiment grandir l'entreprise. La meme equipe, produisant plus.",
+                idealClientLabel: "Pour Qui",
+                whoItsForTitle: "Concu pour les operateurs, pas les experimentateurs",
+                whoIntro: "Cabinets medicaux, equipes d'operations e-commerce et cabinets de services professionnels dans le DMV et au-dela. Si votre equipe est competente mais noyee dans le travail manuel, c'est exactement le probleme que je resous.",
+                whoListTitle: "Vous correspondez bien si:",
+                whoItem1: "La verification des assurances, l'admission ou la planification consomme les heures de reception chaque jour",
+                whoItem2: "Votre equipe fait un travail repetitif qui ne devrait pas necessiter un humain",
+                whoItem3: "Vous avez cherche des outils et logiciels mais rien ne correspond a votre facon d'operer",
+                whoItem4: "Vous voulez quelque chose construit pour votre pratique, pas une plateforme generique",
+                insightsLabel: "Perspectives",
+                insightsTitle: "Passeport au Processus",
+                insightsDesc: "Histoires de 65+ pays sur la construction de systemes, les operations et les personnes qui font fonctionner les choses.",
+                insightsButton: "Lire le Blog →",
+                getStartedLabel: "Commencer",
+                ctaTitle: "Reservez un audit gratuit de 30 minutes",
+                ctaSubtitle: "Pas de discours de vente. Pas de frais. Juste 30 minutes pour examiner vos operations honnetement et vous dire ce que je vois.",
+                altContact: "ou email:"
+            }
+        };
+        
+        options.forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const lang = option.dataset.lang;
+                
+                if (lang !== currentLanguage) {
+                    currentLanguage = lang;
+                    currentLangSpan.textContent = lang.toUpperCase();
+                    
+                    options.forEach(opt => opt.classList.remove('active'));
+                    option.classList.add('active');
+                    
+                    translatePage(lang);
+                }
+                
+                toggle.classList.remove('active');
+            });
+        });
+        
+        function translatePage(lang) {
+            const t = translations[lang];
+            
+            // Helper function to safely update text
+            function safeUpdate(selector, text, isHTML = false) {
+                const el = document.querySelector(selector);
+                if (el) {
+                    if (isHTML) {
+                        el.innerHTML = text;
+                    } else {
+                        el.textContent = text;
+                    }
+                }
+            }
+            
+            function safeUpdateAll(selector, textArray, isHTML = false) {
+                const elements = document.querySelectorAll(selector);
+                textArray.forEach((text, index) => {
+                    if (elements[index]) {
+                        if (isHTML) {
+                            elements[index].innerHTML = text;
+                        } else {
+                            elements[index].textContent = text;
+                        }
+                    }
+                });
+            }
+            
+            // Nav
+            safeUpdate('#tagline', t.tagline);
+            
+            // Hero
+            safeUpdate('.hero h1', t.heroTitle);
+            safeUpdate('.hero-subheadline', t.heroSubtitle, true);
+            document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
+                btn.textContent = t.ctaButton;
+            });
+            
+            // What We Build Section
+            safeUpdateAll('.section-label', [t.ourWorkLabel, t.processLabel, t.idealClientLabel, t.insightsLabel, t.getStartedLabel]);
+            safeUpdateAll('.section-title', [t.whatWeBuildTitle, t.howItWorksTitle, t.whoItsForTitle, t.insightsTitle]);
+            
+            // PROJECT 1 - AI Operations
+            const projects = document.querySelectorAll('.project-card');
+            if (projects[0]) {
+                const p1 = projects[0];
+                const p1Num = p1.querySelector('.project-number');
+                const p1Title = p1.querySelector('.project-title');
+                const p1Desc = p1.querySelector('.project-description');
+                const p1Features = p1.querySelectorAll('.project-features li');
+                const p1Labels = p1.querySelectorAll('.project-label');
+                const p1Names = p1.querySelectorAll('.project-name');
+                const p1Details = p1.querySelectorAll('.project-detail');
+                
+                if (p1Num) p1Num.textContent = t.project1Number;
+                if (p1Title) p1Title.textContent = t.project1Title;
+                if (p1Desc) p1Desc.textContent = t.project1Desc;
+                if (p1Features[0]) p1Features[0].textContent = t.project1Feature1;
+                if (p1Features[1]) p1Features[1].textContent = t.project1Feature2;
+                if (p1Features[2]) p1Features[2].textContent = t.project1Feature3;
+                if (p1Labels[0]) p1Labels[0].textContent = t.project1BuildLabel;
+                if (p1Names[0]) p1Names[0].textContent = t.project1BuildName;
+                if (p1Details[0]) p1Details[0].textContent = t.project1BuildDetail;
+            }
+            
+            // PROJECT 2 - Analytics
+            if (projects[1]) {
+                const p2 = projects[1];
+                const p2Num = p2.querySelector('.project-number');
+                const p2Title = p2.querySelector('.project-title');
+                const p2Desc = p2.querySelector('.project-description');
+                const p2Features = p2.querySelectorAll('.project-features li');
+                const p2Labels = p2.querySelectorAll('.project-label');
+                const p2Details = p2.querySelectorAll('.project-detail');
+                
+                if (p2Num) p2Num.textContent = t.project2Number;
+                if (p2Title) p2Title.textContent = t.project2Title;
+                if (p2Desc) p2Desc.textContent = t.project2Desc;
+                if (p2Features[0]) p2Features[0].textContent = t.project2Feature1;
+                if (p2Features[1]) p2Features[1].textContent = t.project2Feature2;
+                if (p2Features[2]) p2Features[2].textContent = t.project2Feature3;
+                if (p2Features[3]) p2Features[3].textContent = t.project2Feature4;
+                if (p2Labels[0]) p2Labels[0].textContent = t.project1MetaLabel;
+                if (p2Details[0]) p2Details[0].textContent = t.project1MetaDetail;
+            }
+            
+            // PROJECT 3 - Product Innovation
+            if (projects[2]) {
+                const p3 = projects[2];
+                const p3Num = p3.querySelector('.project-number');
+                const p3Title = p3.querySelector('.project-title');
+                const p3Desc = p3.querySelector('.project-description');
+                const p3Labels = p3.querySelectorAll('.project-label');
+                const p3Names = p3.querySelectorAll('.project-name');
+                const p3Details = p3.querySelectorAll('.project-detail');
+                const p3Badge = p3.querySelector('.resona-badge');
+                const p3ComingSoon = p3.querySelectorAll('.project-meta')[2]?.querySelectorAll('li');
+                
+                if (p3Num) p3Num.textContent = t.project3Number;
+                if (p3Title) p3Title.textContent = t.project3Title;
+                if (p3Desc) p3Desc.textContent = t.project3Desc;
+                if (p3Labels[0]) p3Labels[0].textContent = t.project3FocusLabel;
+                if (p3Names[0]) p3Names[0].textContent = t.project3FocusName;
+                if (p3Details[0]) p3Details[0].textContent = t.project3FocusDetail;
+                if (p3Badge) p3Badge.textContent = t.project3ResonaBadge;
+                if (p3Names[1]) p3Names[1].textContent = t.project3ResonaName;
+                if (p3Details[1]) p3Details[1].textContent = t.project3ResonaDetail;
+                if (p3Labels[1]) p3Labels[1].textContent = t.project3ComingSoonLabel;
+                if (p3ComingSoon) {
+                    if (p3ComingSoon[0]) p3ComingSoon[0].textContent = t.project3ComingSoon1;
+                    if (p3ComingSoon[1]) p3ComingSoon[1].textContent = t.project3ComingSoon2;
+                    if (p3ComingSoon[2]) p3ComingSoon[2].textContent = t.project3ComingSoon3;
+                }
+            }
+            
+            // How It Works
+            const steps = document.querySelectorAll('.step');
+            if (steps[0]) {
+                const s1Title = steps[0].querySelector('.step-title');
+                const s1Duration = steps[0].querySelector('.step-duration');
+                const s1Desc = steps[0].querySelector('.step-description');
+                if (s1Title) s1Title.textContent = t.step1Title;
+                if (s1Duration) s1Duration.textContent = t.step1Duration;
+                if (s1Desc) s1Desc.textContent = t.step1Desc;
+            }
+            if (steps[1]) {
+                const s2Title = steps[1].querySelector('.step-title');
+                const s2Duration = steps[1].querySelector('.step-duration');
+                const s2Desc = steps[1].querySelector('.step-description');
+                if (s2Title) s2Title.textContent = t.step2Title;
+                if (s2Duration) s2Duration.textContent = t.step2Duration;
+                if (s2Desc) s2Desc.textContent = t.step2Desc;
+            }
+            if (steps[2]) {
+                const s3Title = steps[2].querySelector('.step-title');
+                const s3Desc = steps[2].querySelector('.step-description');
+                if (s3Title) s3Title.textContent = t.step3Title;
+                if (s3Desc) s3Desc.textContent = t.step3Desc;
+            }
+            
+            // Who It's For
+            safeUpdate('.who-intro', t.whoIntro);
+            safeUpdate('.who-list-title', t.whoListTitle);
+            const whoItems = document.querySelectorAll('.who-list li');
+            if (whoItems[0]) whoItems[0].textContent = t.whoItem1;
+            if (whoItems[1]) whoItems[1].textContent = t.whoItem2;
+            if (whoItems[2]) whoItems[2].textContent = t.whoItem3;
+            if (whoItems[3]) whoItems[3].textContent = t.whoItem4;
+            
+            // Insights
+            const insightsP = document.querySelector('.insights-section p');
+            const insightsA = document.querySelector('.insights-section a');
+            if (insightsP) insightsP.textContent = t.insightsDesc;
+            if (insightsA) insightsA.textContent = t.insightsButton;
+            
+            // Final CTA
+            safeUpdate('.cta-title', t.ctaTitle);
+            safeUpdate('.cta-subtitle', t.ctaSubtitle);
+            const altContact = document.querySelector('.alternative-contact');
+            if (altContact) {
+                altContact.innerHTML = t.altContact + ' <a href="mailto:issouf@konate-labs.com">issouf@konate-labs.com</a>';
+            }
+        }
+    </script>
+</body>
+</html>
